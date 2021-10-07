@@ -51,9 +51,9 @@ interface CartProviderInterface {
    * @param string $order_type
    *   The order type ID.
    * @param \Drupal\commerce_store\Entity\StoreInterface $store
-   *   The store. If omitted, the current store is assumed.
+   *   The store. If empty, the current store is assumed.
    * @param \Drupal\Core\Session\AccountInterface $account
-   *   The user. If omitted, the current user is assumed.
+   *   The user. If empty, the current user is assumed.
    *
    * @return \Drupal\commerce_order\Entity\OrderInterface|null
    *   The cart order, or NULL if none found.
@@ -65,9 +65,9 @@ interface CartProviderInterface {
    *
    * @param string $order_type
    *   The order type ID.
-   * @param \Drupal\commerce_store\Entity\StoreInterface|null $store
-   *   The store. If omitted, the current store is assumed.
-   * @param \Drupal\Core\Session\AccountInterface|null $account
+   * @param \Drupal\commerce_store\Entity\StoreInterface $store
+   *   The store. If empty, the current store is assumed.
+   * @param \Drupal\Core\Session\AccountInterface $account
    *   The user. If empty, the current user is assumed.
    *
    * @return int|null
@@ -78,28 +78,24 @@ interface CartProviderInterface {
   /**
    * Gets all cart orders for the given user.
    *
-   * @param \Drupal\Core\Session\AccountInterface|null $account
-   *   The user. If omitted, the current user is assumed.
-   * @param \Drupal\commerce_store\Entity\StoreInterface|null $store
-   *   The store. If omitted, carts belonging to all stores are returned.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The user. If empty, the current user is assumed.
    *
    * @return \Drupal\commerce_order\Entity\OrderInterface[]
    *   A list of cart orders.
    */
-  public function getCarts(AccountInterface $account = NULL, StoreInterface $store = NULL);
+  public function getCarts(AccountInterface $account = NULL);
 
   /**
    * Gets all cart order ids for the given user.
    *
-   * @param \Drupal\Core\Session\AccountInterface|null $account
-   *   The user. If omitted, the current user is assumed.
-   * @param \Drupal\commerce_store\Entity\StoreInterface|null $store
-   *   The store. If omitted, carts belonging to all stores are returned.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The user. If empty, the current user is assumed.
    *
    * @return int[]
    *   A list of cart orders ids.
    */
-  public function getCartIds(AccountInterface $account = NULL, StoreInterface $store = NULL);
+  public function getCartIds(AccountInterface $account = NULL);
 
   /**
    * Clears the static caches.

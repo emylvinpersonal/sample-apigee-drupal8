@@ -27,10 +27,8 @@ use Drupal\apigee_edge_teams\TeamMembershipManagerInterface;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Url;
 use Drupal\user\UserInterface;
-use Drupal\views\Views;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -46,43 +44,16 @@ class TeamMembersList extends ControllerBase {
   private $teamMembershipManager;
 
   /**
-   * Default member roles.
-   *
-   * @var array
-   */
-  protected $defaultRoles = [];
-
-  /**
-   * The module handler.
-   *
-   * @var \Drupal\Core\Extension\ModuleHandlerInterface|null
-   */
-  protected $moduleHandler;
-
-  /**
    * TeamMembersList constructor.
    *
    * @param \Drupal\apigee_edge_teams\TeamMembershipManagerInterface $team_membership_manager
    *   The team membership manager service.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
-   * @param \Drupal\Core\Extension\ModuleHandlerInterface|null $module_handler
-   *   The module handler.
    */
-  public function __construct(TeamMembershipManagerInterface $team_membership_manager, EntityTypeManagerInterface $entity_type_manager, ModuleHandlerInterface $module_handler = NULL) {
-    if (!$module_handler) {
-      @trigger_error('Calling ' . __METHOD__ . ' without the $module_handler is deprecated in apigee_edge:8-x-1.19 and is required before apigee_edge:8.x-2.0. See https://github.com/apigee/apigee-edge-drupal/pull/518.', E_USER_DEPRECATED);
-      $module_handler = \Drupal::moduleHandler();
-    }
-
+  public function __construct(TeamMembershipManagerInterface $team_membership_manager, EntityTypeManagerInterface $entity_type_manager) {
     $this->teamMembershipManager = $team_membership_manager;
     $this->entityTypeManager = $entity_type_manager;
-
-    if ($role = $this->entityTypeManager()->getStorage('team_role')->load(TeamRoleInterface::TEAM_MEMBER_ROLE)) {
-      $this->defaultRoles = [$role->id() => $role->label()];
-    }
-
-    $this->moduleHandler = $module_handler;
   }
 
   /**
@@ -91,8 +62,7 @@ class TeamMembersList extends ControllerBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('apigee_edge_teams.team_membership_manager'),
-      $container->get('entity_type.manager'),
-      $container->get('module_handler')
+      $container->get('entity_type.manager')
     );
   }
 
@@ -153,13 +123,6 @@ class TeamMembersList extends ControllerBase {
       $build['table']['#rows'][$member] = $this->buildRow($member, $users_by_mail, $team_member_roles_by_mail, $team);
     }
 
-    // Add invitations.
-    if ($invitation_view = Views::getView('team_invitations')) {
-      $build['invitations'] = $invitation_view->buildRenderable('team', [
-        'team' => $team->id(),
-      ]);
-    }
-
     return $build;
   }
 
@@ -201,7 +164,7 @@ class TeamMembersList extends ControllerBase {
       $roles = array_reduce($team_member_roles_by_mail[$member]->getTeamRoles(), function ($carry, TeamRoleInterface $role) {
         $carry[$role->id()] = $role->label();
         return $carry;
-      }, $this->defaultRoles);
+      }, []);
       $row['data']['roles']['data'] = [
         '#theme' => 'item_list',
         '#items' => $roles,
@@ -212,10 +175,7 @@ class TeamMembersList extends ControllerBase {
       ];
     }
     else {
-      $row['data']['roles']['data'] = [
-        '#theme' => 'item_list',
-        '#items' => $this->defaultRoles,
-      ];
+      $row['data']['roles']['data'] = NULL;
     }
 
     $row['data']['operations']['data'] = $this->buildOperations($member, $team);
@@ -254,25 +214,14 @@ class TeamMembersList extends ControllerBase {
    */
   protected function getOperations(string $member, TeamInterface $team) {
     $operations = [];
-
-    $url = Url::fromRoute('entity.team.member.edit', ['team' => $team->id(), 'developer' => $member], ['query' => ['destination' => $team->toUrl('members')->toString()]]);
-    if ($url->access()) {
-      $operations['edit'] = [
-        'title' => $this->t('Edit'),
-        'url' => $url,
-      ];
-    }
-
-    $url = Url::fromRoute('entity.team.member.remove', ['team' => $team->id(), 'developer' => $member], ['query' => ['destination' => $team->toUrl('members')->toString()]]);
-    if ($url->access()) {
-      $operations['remove'] = [
-        'title' => $this->t('Remove'),
-        'url' => $url,
-      ];
-    }
-
-    // Allow modules to alter operations.
-    $this->moduleHandler->alter('entity_operation', $operations, $team);
+    $operations['edit'] = [
+      'title' => $this->t('Edit'),
+      'url' => Url::fromRoute('entity.team.member.edit', ['team' => $team->id(), 'developer' => $member], ['query' => ['destination' => $team->toUrl('members')->toString()]]),
+    ];
+    $operations['remove'] = [
+      'title' => $this->t('Remove'),
+      'url' => Url::fromRoute('entity.team.member.remove', ['team' => $team->id(), 'developer' => $member], ['query' => ['destination' => $team->toUrl('members')->toString()]]),
+    ];
 
     return $operations;
   }

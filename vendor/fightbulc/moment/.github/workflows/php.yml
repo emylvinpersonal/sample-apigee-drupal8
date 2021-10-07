@@ -15,6 +15,9 @@ jobs:
       - name: Validate composer.json and composer.lock
         run: composer validate
 
+      - name: Install composer helper
+        run: composer global require hirak/prestissimo
+
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
 
@@ -34,6 +37,9 @@ jobs:
 
       - name: Validate composer.json and composer.lock
         run: composer validate
+
+      - name: Install composer helper
+        run: composer global require hirak/prestissimo
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
@@ -55,6 +61,9 @@ jobs:
       - name: Validate composer.json and composer.lock
         run: composer validate
 
+      - name: Install composer helper
+        run: composer global require hirak/prestissimo
+
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
 
@@ -74,6 +83,9 @@ jobs:
 
       - name: Validate composer.json and composer.lock
         run: composer validate
+
+      - name: Install composer helper
+        run: composer global require hirak/prestissimo
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
@@ -95,6 +107,9 @@ jobs:
       - name: Validate composer.json and composer.lock
         run: composer validate
 
+      - name: Install composer helper
+        run: composer global require hirak/prestissimo
+
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
 
@@ -114,6 +129,9 @@ jobs:
 
       - name: Validate composer.json and composer.lock
         run: composer validate
+
+      - name: Install composer helper
+        run: composer global require hirak/prestissimo
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
@@ -135,6 +153,9 @@ jobs:
       - name: Validate composer.json and composer.lock
         run: composer validate
 
+      - name: Install composer helper
+        run: composer global require hirak/prestissimo
+
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
 
@@ -154,6 +175,9 @@ jobs:
 
       - name: Validate composer.json and composer.lock
         run: composer validate
+
+      - name: Install composer helper
+        run: composer global require hirak/prestissimo
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
@@ -175,25 +199,8 @@ jobs:
       - name: Validate composer.json and composer.lock
         run: composer validate
 
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest
-
-      - name: Run PHPUnit
-        run: vendor/bin/phpunit -c tests/build.xml
-
-  PHP8_0:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.0'
-
-      - name: Validate composer.json and composer.lock
-        run: composer validate
+      - name: Install composer helper
+        run: composer global require hirak/prestissimo
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest

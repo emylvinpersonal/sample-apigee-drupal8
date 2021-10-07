@@ -2,7 +2,6 @@
 
 namespace Drupal\commerce_tax\Form;
 
-use Drupal\commerce\InlineFormManager;
 use Drupal\commerce_tax\TaxTypeManager;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\EntityForm;
@@ -19,23 +18,13 @@ class TaxTypeForm extends EntityForm {
   protected $pluginManager;
 
   /**
-   * The inline form manager.
-   *
-   * @var \Drupal\commerce\InlineFormManager
-   */
-  protected $inlineFormManager;
-
-  /**
    * Constructs a new TaxTypeForm object.
    *
    * @param \Drupal\commerce_tax\TaxTypeManager $plugin_manager
    *   The tax type plugin manager.
-   * @param \Drupal\commerce\InlineFormManager $inline_form_manager
-   *   The inline form manager.
    */
-  public function __construct(TaxTypeManager $plugin_manager, InlineFormManager $inline_form_manager) {
+  public function __construct(TaxTypeManager $plugin_manager) {
     $this->pluginManager = $plugin_manager;
-    $this->inlineFormManager = $inline_form_manager;
   }
 
   /**
@@ -43,8 +32,7 @@ class TaxTypeForm extends EntityForm {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('plugin.manager.commerce_tax_type'),
-      $container->get('plugin.manager.commerce_inline_form')
+      $container->get('plugin.manager.commerce_tax_type')
     );
   }
 
@@ -106,14 +94,12 @@ class TaxTypeForm extends EntityForm {
         'wrapper' => $wrapper_id,
       ],
     ];
-    $inline_form = $this->inlineFormManager->createInstance('plugin_configuration', [
-      'plugin_type' => 'commerce_tax_type',
-      'plugin_id' => $plugin,
-      'plugin_configuration' => $plugin_configuration,
-    ]);
-    $form['configuration']['#inline_form'] = $inline_form;
-    $form['configuration']['#parents'] = ['configuration'];
-    $form['configuration'] = $inline_form->buildInlineForm($form['configuration'], $form_state);
+    $form['configuration'] = [
+      '#type' => 'commerce_plugin_configuration',
+      '#plugin_type' => 'commerce_tax_type',
+      '#plugin_id' => $plugin,
+      '#default_value' => $plugin_configuration,
+    ];
     $form['status'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Enabled'),

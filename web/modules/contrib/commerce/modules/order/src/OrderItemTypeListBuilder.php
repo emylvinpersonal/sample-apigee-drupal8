@@ -15,7 +15,7 @@ class OrderItemTypeListBuilder extends ConfigEntityListBuilder {
    */
   public function buildHeader() {
     $header['label'] = $this->t('Order item type');
-    $header['id'] = $this->t('ID');
+    $header['id'] = $this->t('Machine name');
     return $header + parent::buildHeader();
   }
 

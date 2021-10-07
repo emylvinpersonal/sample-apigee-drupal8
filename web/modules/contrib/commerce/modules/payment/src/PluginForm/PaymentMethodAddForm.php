@@ -126,7 +126,7 @@ class PaymentMethodAddForm extends PaymentMethodFormBase {
     ];
     $element['number'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Card number'),
+      '#title' => t('Card number'),
       '#attributes' => ['autocomplete' => 'off'],
       '#required' => TRUE,
       '#maxlength' => 19,
@@ -140,7 +140,7 @@ class PaymentMethodAddForm extends PaymentMethodFormBase {
     ];
     $element['expiration']['month'] = [
       '#type' => 'select',
-      '#title' => $this->t('Month'),
+      '#title' => t('Month'),
       '#options' => $months,
       '#default_value' => date('m'),
       '#required' => TRUE,
@@ -152,14 +152,14 @@ class PaymentMethodAddForm extends PaymentMethodFormBase {
     ];
     $element['expiration']['year'] = [
       '#type' => 'select',
-      '#title' => $this->t('Year'),
+      '#title' => t('Year'),
       '#options' => $years,
       '#default_value' => $current_year_4,
       '#required' => TRUE,
     ];
     $element['security_code'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('CVV'),
+      '#title' => t('CVV'),
       '#attributes' => ['autocomplete' => 'off'],
       '#required' => TRUE,
       '#maxlength' => 4,

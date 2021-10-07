@@ -183,7 +183,7 @@
 	},
 	"XOF": {
 		"name": "franco CFA (BCEAO)",
-		"symbol": "F CFA"
+		"symbol": "CFA"
 	},
 	"XAF": {
 		"name": "franco CFA (BEAC)",
@@ -262,7 +262,7 @@
 		"name": "leone de Serra Leoa"
 	},
 	"MDL": {
-		"name": "leu moldavo"
+		"name": "Leu moldavo"
 	},
 	"RON": {
 		"name": "leu romanés"
@@ -299,7 +299,7 @@
 		"name": "libra xibraltareña"
 	},
 	"SZL": {
-		"name": "lilangeni de Swazilandia"
+		"name": "lilangeni de Eswatini"
 	},
 	"TRY": {
 		"name": "lira turca"

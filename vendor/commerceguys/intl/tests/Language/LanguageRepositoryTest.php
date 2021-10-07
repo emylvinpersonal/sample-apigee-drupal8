@@ -58,6 +58,7 @@ final class LanguageRepositoryTest extends TestCase
     /**
      * @covers ::get
      * @covers ::loadDefinitions
+     * @covers ::createLanguageFromDefinition
      *
      * @uses \CommerceGuys\Intl\Language\Language
      * @uses \CommerceGuys\Intl\Locale
@@ -121,6 +122,7 @@ final class LanguageRepositoryTest extends TestCase
     /**
      * @covers ::getAll
      * @covers ::loadDefinitions
+     * @covers ::createLanguageFromDefinition
      *
      * @uses \CommerceGuys\Intl\Language\Language
      * @uses \CommerceGuys\Intl\Locale

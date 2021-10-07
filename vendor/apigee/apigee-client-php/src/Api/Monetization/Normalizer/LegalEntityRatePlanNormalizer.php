@@ -23,7 +23,7 @@ use Apigee\Edge\Api\Monetization\Entity\RatePlanInterface;
 abstract class LegalEntityRatePlanNormalizer extends RatePlanNormalizer
 {
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      *
      * @psalm-suppress InvalidReturnType Returning an object here is required
      * for creating a valid Apigee Edge request.

@@ -209,19 +209,10 @@ class DeveloperAppListBuilderForDeveloper extends AppListBuilder implements Cont
       $title = $this->t('Apps of @user', $args);
     }
     else {
-      $title = apigee_edge_app_listing_page_title();
+      $title = $this->t('Apps');
     }
 
     return $title;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function getCacheMaxAge() {
-    return $this->configFactory
-      ->get('apigee_edge.developer_app_settings')
-      ->get('cache_expiration');
   }
 
 }

@@ -15,22 +15,22 @@
 		"name": "birr etiopian"
 	},
 	"VES": {
-		"name": "bolívar soberano"
+		"name": "bolivar venezuelean"
 	},
 	"BOB": {
-		"name": "boliviano"
+		"name": "boliviano bolivian"
 	},
 	"GHS": {
 		"name": "cedi ghanez"
 	},
 	"CRC": {
-		"name": "colón costarican"
+		"name": "colon costarican"
 	},
 	"SVC": {
 		"name": "colon El Salvador"
 	},
 	"NIO": {
-		"name": "córdoba oro"
+		"name": "cordoba nicaraguană"
 	},
 	"CZK": {
 		"name": "coroană cehă"
@@ -50,9 +50,6 @@
 	"GMD": {
 		"name": "dalasi din Gambia"
 	},
-	"MKD": {
-		"name": "denar"
-	},
 	"DZD": {
 		"name": "dinar algerian"
 	},
@@ -70,6 +67,9 @@
 	},
 	"LYD": {
 		"name": "dinar libian"
+	},
+	"MKD": {
+		"name": "dinar macedonean"
 	},
 	"RSD": {
 		"name": "dinar sârbesc"
@@ -110,6 +110,9 @@
 	"BND": {
 		"name": "dolar din Brunei"
 	},
+	"XCD": {
+		"name": "dolar din Caraibele de Est"
+	},
 	"HKD": {
 		"name": "dolar din Hong Kong"
 	},
@@ -120,10 +123,7 @@
 		"name": "dolar din Insulele Solomon"
 	},
 	"TTD": {
-		"name": "dolar din Trinidad și Tobago"
-	},
-	"XCD": {
-		"name": "dolar est-caraib"
+		"name": "dolar din Trinidad-Tobago"
 	},
 	"FJD": {
 		"name": "dolar fijian"
@@ -171,14 +171,14 @@
 		"name": "florin aruban"
 	},
 	"HUF": {
-		"name": "forint"
+		"name": "forint maghiar"
 	},
 	"BIF": {
 		"name": "franc burundez"
 	},
 	"XOF": {
 		"name": "franc CFA BCEAO",
-		"symbol": "F CFA"
+		"symbol": "CFA"
 	},
 	"XAF": {
 		"name": "franc CFA BEAC",
@@ -209,14 +209,14 @@
 	"HTG": {
 		"name": "gourde din Haiti"
 	},
-	"UAH": {
-		"name": "grivnă"
-	},
 	"PYG": {
-		"name": "guarani"
+		"name": "guarani paraguayan"
 	},
 	"ANG": {
-		"name": "gulden neerlandez antilez"
+		"name": "gulden din Antilele Olandeze"
+	},
+	"UAH": {
+		"name": "hryvna ucraineană"
 	},
 	"PGK": {
 		"name": "kina din Papua-Noua Guinee"
@@ -225,7 +225,7 @@
 		"name": "kip laoțian"
 	},
 	"HRK": {
-		"name": "kuna"
+		"name": "kuna croată"
 	},
 	"MWK": {
 		"name": "kwacha malawiană"
@@ -243,7 +243,7 @@
 		"name": "lari georgian"
 	},
 	"ALL": {
-		"name": "lek"
+		"name": "leka albaneză"
 	},
 	"HNL": {
 		"name": "lempira honduriană"
@@ -258,7 +258,7 @@
 		"name": "leu românesc"
 	},
 	"BGN": {
-		"name": "leva"
+		"name": "leva bulgărească"
 	},
 	"SZL": {
 		"name": "lilangeni din Swaziland"
@@ -303,7 +303,7 @@
 		"name": "manat turkmen"
 	},
 	"BAM": {
-		"name": "marcă convertibilă"
+		"name": "marcă convertibilă din Bosnia și Herțegovina"
 	},
 	"MZN": {
 		"name": "metical mozambican"
@@ -363,7 +363,7 @@
 		"name": "rand sud-african"
 	},
 	"BRL": {
-		"name": "real"
+		"name": "real brazilian"
 	},
 	"IRR": {
 		"name": "rial iranian"
@@ -417,7 +417,7 @@
 		"name": "rupie srilankeză"
 	},
 	"PEN": {
-		"name": "sol"
+		"name": "sol peruvian"
 	},
 	"KGS": {
 		"name": "som kârgâz"
@@ -474,6 +474,6 @@
 		"name": "yuan chinezesc"
 	},
 	"PLN": {
-		"name": "zlot"
+		"name": "zlot polonez"
 	}
 }

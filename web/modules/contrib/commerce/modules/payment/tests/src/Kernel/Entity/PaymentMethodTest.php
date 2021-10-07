@@ -7,7 +7,6 @@ use Drupal\commerce_payment\Entity\PaymentMethod;
 use Drupal\commerce_payment\Plugin\Commerce\PaymentMethodType\CreditCard;
 use Drupal\profile\Entity\Profile;
 use Drupal\Tests\commerce_order\Kernel\OrderKernelTestBase;
-use Drupal\user\UserInterface;
 
 /**
  * Tests the payment method entity.
@@ -38,7 +37,7 @@ class PaymentMethodTest extends OrderKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp(): void {
+  protected function setUp() {
     parent::setUp();
 
     $this->installEntitySchema('commerce_payment_method');
@@ -108,13 +107,7 @@ class PaymentMethodTest extends OrderKernelTestBase {
     $this->assertEquals($this->user, $payment_method->getOwner());
     $this->assertEquals($this->user->id(), $payment_method->getOwnerId());
     $payment_method->setOwnerId(0);
-    $this->assertInstanceOf(UserInterface::class, $payment_method->getOwner());
-    $this->assertTrue($payment_method->getOwner()->isAnonymous());
-    // Non-existent/deleted user ID.
-    $payment_method->setOwnerId(890);
-    $this->assertInstanceOf(UserInterface::class, $payment_method->getOwner());
-    $this->assertTrue($payment_method->getOwner()->isAnonymous());
-    $this->assertEquals(890, $payment_method->getOwnerId());
+    $this->assertEquals(NULL, $payment_method->getOwner());
     $payment_method->setOwnerId($this->user->id());
     $this->assertEquals($this->user, $payment_method->getOwner());
     $this->assertEquals($this->user->id(), $payment_method->getOwnerId());

@@ -11,6 +11,7 @@ description: 'Display a set of order items in a table.'
 tag: ''
 base_table: commerce_order_item
 base_field: order_item_id
+core: 8.x
 display:
   default:
     display_plugin: default
@@ -384,14 +385,14 @@ display:
           plugin_id: text_custom
       relationships: {  }
       arguments:
-        order_item_id:
-          id: order_item_id
+        order_id:
+          id: order_id
           table: commerce_order_item
-          field: order_item_id
+          field: order_id
           relationship: none
           group_type: group
           admin_label: ''
-          default_action: empty
+          default_action: 'not found'
           exception:
             value: all
             title_enable: false
@@ -416,10 +417,10 @@ display:
             type: none
             fail: 'not found'
           validate_options: {  }
-          break_phrase: true
+          break_phrase: false
           not: false
           entity_type: commerce_order_item
-          entity_field: order_item_id
+          entity_field: order_id
           plugin_id: numeric
       display_extenders: {  }
     cache_metadata:

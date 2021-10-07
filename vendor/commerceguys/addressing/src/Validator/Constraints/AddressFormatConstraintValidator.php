@@ -147,18 +147,16 @@ class AddressFormatConstraintValidator extends ConstraintValidator
         // Resolve the available patterns.
         $fullPattern = $addressFormat->getPostalCodePattern();
         $startPattern = null;
-        if (!empty($constraint->extendedPostalCodeValidation)) {
-            foreach ($subdivisions as $subdivision) {
-                $pattern = $subdivision->getPostalCodePattern();
-                if (empty($pattern)) {
-                    continue;
-                }
+        foreach ($subdivisions as $subdivision) {
+            $pattern = $subdivision->getPostalCodePattern();
+            if (empty($pattern)) {
+                continue;
+            }
 
-                if ($subdivision->getPostalCodePatternType() == PatternType::FULL) {
-                    $fullPattern = $pattern;
-                } else {
-                    $startPattern = $pattern;
-                }
+            if ($subdivision->getPostalCodePatternType() == PatternType::FULL) {
+                $fullPattern = $pattern;
+            } else {
+                $startPattern = $pattern;
             }
         }
 

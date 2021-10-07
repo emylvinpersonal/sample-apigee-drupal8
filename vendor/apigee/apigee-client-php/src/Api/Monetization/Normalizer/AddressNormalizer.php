@@ -43,7 +43,7 @@ class AddressNormalizer extends ObjectNormalizer
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function supportsNormalization($data, $format = null)
     {

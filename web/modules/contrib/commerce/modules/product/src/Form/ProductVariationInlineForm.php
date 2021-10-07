@@ -23,8 +23,8 @@ class ProductVariationInlineForm extends EntityInlineForm {
    */
   public function getEntityTypeLabels() {
     $labels = [
-      'singular' => $this->t('variation'),
-      'plural' => $this->t('variations'),
+      'singular' => t('variation'),
+      'plural' => t('variations'),
     ];
     return $labels;
   }
@@ -34,21 +34,21 @@ class ProductVariationInlineForm extends EntityInlineForm {
    */
   public function getTableFields($bundles) {
     $fields = parent::getTableFields($bundles);
-    $fields['label']['label'] = $this->t('Title');
+    $fields['label']['label'] = t('Title');
     $fields['price'] = [
       'type' => 'field',
-      'label' => $this->t('Price'),
+      'label' => t('Price'),
       'weight' => 10,
     ];
     $fields['status'] = [
       'type' => 'field',
-      'label' => $this->t('Status'),
+      'label' => t('Status'),
       'weight' => 100,
       'display_options' => [
         'settings' => [
           'format' => 'custom',
-          'format_custom_true' => $this->t('Published'),
-          'format_custom_false' => $this->t('Unpublished'),
+          'format_custom_true' => t('Published'),
+          'format_custom_false' => t('Unpublished'),
         ],
       ],
     ];
@@ -75,7 +75,7 @@ class ProductVariationInlineForm extends EntityInlineForm {
     else {
       // @todo Replace the Complex widget with the Simple one when there
       // are no attributes, indicating there should only be one variation.
-      $label = $this->t('N/A');
+      $label = t('N/A');
     }
 
     return $label;

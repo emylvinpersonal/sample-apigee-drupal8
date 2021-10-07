@@ -46,8 +46,7 @@
 		"name": "Birta Itoobbiya"
 	},
 	"PHP": {
-		"name": "Biso Filibin",
-		"symbol": "₱"
+		"name": "Biso Filibin"
 	},
 	"VES": {
 		"name": "Bolifarada Fenesuwela"
@@ -221,7 +220,7 @@
 	},
 	"XOF": {
 		"name": "Faranka CFA Galbeedka Afrika",
-		"symbol": "F CFA"
+		"symbol": "CFA"
 	},
 	"XPF": {
 		"name": "Faranka CFP",

@@ -246,7 +246,7 @@
 	},
 	"XOF": {
 		"name": "West African CFA Franc",
-		"symbol": "F CFA"
+		"symbol": "CFA"
 	},
 	"YER": {
 		"name": "Yemeni Rial"
@@ -342,8 +342,7 @@
 		"name": "པོ་ལེནཌ་ཀྱི་དངུལ ཛ྄ལོ་ཊི"
 	},
 	"PHP": {
-		"name": "ཕི་ལི་པིནས་གྱི་དངུལ་ པེ་སོ",
-		"symbol": "₱"
+		"name": "ཕི་ལི་པིནས་གྱི་དངུལ་ པེ་སོ"
 	},
 	"BMD": {
 		"name": "བར་མུ་ཌ་གི་དངུལ་ ཌོ་ལར"

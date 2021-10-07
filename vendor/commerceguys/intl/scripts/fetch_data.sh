@@ -6,12 +6,14 @@ rm -fR assets
 mkdir assets
 cd assets
 
-git clone https://github.com/unicode-org/cldr-json.git cldr
+git clone https://github.com/unicode-cldr/cldr-core.git
+git clone https://github.com/unicode-cldr/cldr-numbers-full.git
+git clone https://github.com/unicode-cldr/cldr-localenames-full.git
 
 if command -v wget >/dev/null 2>&1;
 then
     wget $URL -O c2.xml
-else
+else 
     if command -v curl >/dev/null 2>&1;
     then
         curl $URL > c2.xml

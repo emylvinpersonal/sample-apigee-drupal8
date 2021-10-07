@@ -3,23 +3,17 @@
 namespace Doctrine\Common\Cache;
 
 use Traversable;
-
 use function array_values;
 use function count;
 use function iterator_to_array;
 
 /**
  * Cache provider that allows to easily chain multiple cache providers
- *
- * @deprecated Deprecated without replacement in doctrine/cache 1.11. This class will be dropped in 2.0
  */
 class ChainCache extends CacheProvider
 {
     /** @var CacheProvider[] */
     private $cacheProviders = [];
-
-    /** @var int */
-    private $defaultLifeTimeForDownstreamCacheProviders = 0;
 
     /**
      * @param CacheProvider[] $cacheProviders
@@ -29,11 +23,6 @@ class ChainCache extends CacheProvider
         $this->cacheProviders = $cacheProviders instanceof Traversable
             ? iterator_to_array($cacheProviders, false)
             : array_values($cacheProviders);
-    }
-
-    public function setDefaultLifeTimeForDownstreamCacheProviders(int $defaultLifeTimeForDownstreamCacheProviders): void
-    {
-        $this->defaultLifeTimeForDownstreamCacheProviders = $defaultLifeTimeForDownstreamCacheProviders;
     }
 
     /**
@@ -59,7 +48,7 @@ class ChainCache extends CacheProvider
 
                 // We populate all the previous cache layers (that are assumed to be faster)
                 for ($subKey = $key - 1; $subKey >= 0; $subKey--) {
-                    $this->cacheProviders[$subKey]->doSave($id, $value, $this->defaultLifeTimeForDownstreamCacheProviders);
+                    $this->cacheProviders[$subKey]->doSave($id, $value);
                 }
 
                 return $value;
@@ -85,7 +74,7 @@ class ChainCache extends CacheProvider
             // We populate all the previous cache layers (that are assumed to be faster)
             if (count($fetchedValues) === $keysCount) {
                 foreach ($traversedProviders as $previousCacheProvider) {
-                    $previousCacheProvider->doSaveMultiple($fetchedValues, $this->defaultLifeTimeForDownstreamCacheProviders);
+                    $previousCacheProvider->doSaveMultiple($fetchedValues);
                 }
 
                 return $fetchedValues;

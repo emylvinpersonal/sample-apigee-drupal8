@@ -22,7 +22,6 @@ use Apigee\Edge\Exception\OauthAccessTokenAuthenticationException;
 use Apigee\Edge\HttpClient\Plugin\Authentication\AbstractOauth;
 use Http\Client\Common\Plugin;
 use Http\Client\Exception;
-use Http\Promise\Promise;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -47,17 +46,17 @@ class RetryOauthAuthenticationPlugin implements Plugin
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      *
      * @see AbstractOauth::getAccessToken()
      *
      * @psalm-suppress InvalidThrow - Exception with interface can be thrown.
      */
-    public function handleRequest(RequestInterface $request, callable $next, callable $first): Promise
+    public function handleRequest(RequestInterface $request, callable $next, callable $first)
     {
         return $next($request)->then(function (ResponseInterface $response) {
             return $response;
-        }, function (Exception $exception) use ($request, $first) {
+        }, function (Exception $exception) use ($request, $next, $first) {
             if ($exception instanceof OauthAccessTokenAuthenticationException) {
                 // Mark access token as expired and with that ensure that the authentication plugin gets a new
                 // access token.

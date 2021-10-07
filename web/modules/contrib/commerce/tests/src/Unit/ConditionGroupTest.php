@@ -16,10 +16,11 @@ class ConditionGroupTest extends UnitTestCase {
 
   /**
    * ::covers __construct.
+   *
+   * @expectedException \InvalidArgumentException
    */
   public function testInvalidOperator() {
-    $this->expectException(\InvalidArgumentException::class);
-    new ConditionGroup([], 'INVALID');
+    $condition_group = new ConditionGroup([], 'INVALID');
   }
 
   /**

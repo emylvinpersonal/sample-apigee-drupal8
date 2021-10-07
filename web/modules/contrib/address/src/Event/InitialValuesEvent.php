@@ -8,10 +8,8 @@ use Symfony\Component\EventDispatcher\Event;
 /**
  * Defines the initial values event.
  *
- * @deprecated in address:8.x-1.5 and is removed from address:8.x-2.0. Use
- *   hook_field_widget_form_alter() to change the address #default_value.
- *
- * @see https://www.drupal.org/project/address/issues/2838457
+ * @deprecated No longer fired since 1.5. Use hook_field_widget_form_alter()
+ *             to change the address #default_value instead.
  */
 class InitialValuesEvent extends Event {
 

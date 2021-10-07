@@ -5,7 +5,6 @@ namespace Drupal\Tests\commerce_product\Kernel\Entity;
 use Drupal\commerce_product\Entity\ProductVariation;
 use Drupal\commerce_product\Entity\Product;
 use Drupal\Tests\commerce\Kernel\CommerceKernelTestBase;
-use Drupal\user\UserInterface;
 
 /**
  * Tests the Product entity.
@@ -36,7 +35,7 @@ class ProductTest extends CommerceKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp(): void {
+  protected function setUp() {
     parent::setUp();
 
     $this->installEntitySchema('commerce_product_variation');
@@ -87,13 +86,7 @@ class ProductTest extends CommerceKernelTestBase {
     $this->assertEquals($this->user, $product->getOwner());
     $this->assertEquals($this->user->id(), $product->getOwnerId());
     $product->setOwnerId(0);
-    $this->assertInstanceOf(UserInterface::class, $product->getOwner());
-    $this->assertTrue($product->getOwner()->isAnonymous());
-    // Non-existent/deleted user ID.
-    $product->setOwnerId(891);
-    $this->assertInstanceOf(UserInterface::class, $product->getOwner());
-    $this->assertTrue($product->getOwner()->isAnonymous());
-    $this->assertEquals(891, $product->getOwnerId());
+    $this->assertEquals(NULL, $product->getOwner());
     $product->setOwnerId($this->user->id());
     $this->assertEquals($this->user, $product->getOwner());
     $this->assertEquals($this->user->id(), $product->getOwnerId());
@@ -102,12 +95,6 @@ class ProductTest extends CommerceKernelTestBase {
       'store',
       'url.query_args:v',
     ], $product->getCacheContexts());
-
-    // Ensure that we don't store a broken reference to the product owner.
-    $product->setOwnerId(900);
-    $this->assertEquals(900, $product->getOwnerId());
-    $product->save();
-    $this->assertEquals(0, $product->getOwnerId());
   }
 
   /**
@@ -163,7 +150,6 @@ class ProductTest extends CommerceKernelTestBase {
     $this->assertNotEmpty($product->hasVariation($variation1));
 
     $this->assertEquals($product->getDefaultVariation(), $variation2);
-    $this->assertEquals($variation2, $product->get('default_variation')->entity);
     $this->assertNotEquals($product->getDefaultVariation(), $variation1);
 
     // Confirm that postSave() sets the product_id on each variation.

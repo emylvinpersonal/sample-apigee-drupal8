@@ -201,7 +201,7 @@
 	},
 	"XOF": {
 		"name": "Franc CFA Tây Phi",
-		"symbol": "F CFA"
+		"symbol": "CFA"
 	},
 	"XAF": {
 		"name": "Franc CFA Trung Phi",
@@ -489,7 +489,7 @@
 	},
 	"JPY": {
 		"name": "Yên Nhật",
-		"symbol": "¥"
+		"symbol": "JP¥"
 	},
 	"PLN": {
 		"name": "Zloty Ba Lan"

@@ -26,7 +26,7 @@ use Apigee\Edge\Normalizer\KeyValueMapNormalizer;
 class LegalEntitySerializer extends EntitySerializer
 {
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public static function getEntityTypeSpecificDefaultNormalizers(): array
     {

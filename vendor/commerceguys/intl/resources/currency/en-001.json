@@ -46,7 +46,7 @@
 		"name": "Belize Dollar"
 	},
 	"BMD": {
-		"name": "Bermudian Dollar"
+		"name": "Bermudan Dollar"
 	},
 	"BTN": {
 		"name": "Bhutanese Ngultrum"
@@ -343,8 +343,7 @@
 		"name": "Peruvian Sol"
 	},
 	"PHP": {
-		"name": "Philippine Peso",
-		"symbol": "₱"
+		"name": "Philippine Piso"
 	},
 	"PLN": {
 		"name": "Polish Zloty"
@@ -483,7 +482,7 @@
 	},
 	"XOF": {
 		"name": "West African CFA Franc",
-		"symbol": "F CFA"
+		"symbol": "CFA"
 	},
 	"YER": {
 		"name": "Yemeni Rial"

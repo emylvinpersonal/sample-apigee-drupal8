@@ -2,7 +2,9 @@
 
 namespace League\Container\ServiceProvider;
 
-abstract class AbstractSignatureServiceProvider extends AbstractServiceProvider implements SignatureServiceProviderInterface // @codingStandardsIgnoreLine
+abstract class AbstractSignatureServiceProvider
+    extends AbstractServiceProvider
+    implements SignatureServiceProviderInterface
 {
     /**
      * @var string

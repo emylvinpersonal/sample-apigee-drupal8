@@ -16,7 +16,7 @@ use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 class ZoneItemTest extends EntityKernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * @var array
    */
   public static $modules = [
     'address',

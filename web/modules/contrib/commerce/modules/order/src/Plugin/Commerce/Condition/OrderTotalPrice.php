@@ -44,14 +44,14 @@ class OrderTotalPrice extends ConditionBase {
 
     $form['operator'] = [
       '#type' => 'select',
-      '#title' => $this->t('Operator'),
+      '#title' => t('Operator'),
       '#options' => $this->getComparisonOperators(),
       '#default_value' => $this->configuration['operator'],
       '#required' => TRUE,
     ];
     $form['amount'] = [
       '#type' => 'commerce_price',
-      '#title' => $this->t('Amount'),
+      '#title' => t('Amount'),
       '#default_value' => $amount,
       '#required' => TRUE,
     ];

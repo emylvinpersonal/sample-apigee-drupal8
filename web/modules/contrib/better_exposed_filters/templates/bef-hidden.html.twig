@@ -2,11 +2,11 @@
   Themes Views' default multi-select element as hidden input elements.
 
   Available variables:
-    - hidden_elements: Array of hidden input elements for all possible filter
+    - hiddenElements: Array of hidden input elements for all possible filter
       options.
     - selected: Array of selected values.
 #}
-{% for value, hidden in hidden_elements %}
+{% for value, hidden in hiddenElements %}
   {% if value in selected %}
     {{ hidden }}
   {% endif %}

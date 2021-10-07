@@ -34,6 +34,13 @@ abstract class CheckoutFlowWithPanesBase extends CheckoutFlowBase implements Che
   protected $panes = [];
 
   /**
+   * Static cache of visible steps.
+   *
+   * @var array
+   */
+  protected $visibleSteps = [];
+
+  /**
    * Constructs a new CheckoutFlowWithPanesBase object.
    *
    * @param array $configuration
@@ -127,9 +134,19 @@ abstract class CheckoutFlowWithPanesBase extends CheckoutFlowBase implements Che
   /**
    * {@inheritdoc}
    */
-  protected function isStepVisible($step_id) {
-    // A step is visible if it has at least one visible pane.
-    return !empty($this->getVisiblePanes($step_id));
+  public function getVisibleSteps() {
+    if (empty($this->visibleSteps)) {
+      $steps = $this->getSteps();
+      foreach ($steps as $step_id => $step) {
+        // A step is visible if it has at least one visible pane.
+        if (empty($this->getVisiblePanes($step_id))) {
+          unset($steps[$step_id]);
+        }
+      }
+      $this->visibleSteps = $steps;
+    }
+
+    return $this->visibleSteps;
   }
 
   /**
@@ -137,12 +154,8 @@ abstract class CheckoutFlowWithPanesBase extends CheckoutFlowBase implements Che
    */
   public function calculateDependencies() {
     $dependencies = parent::calculateDependencies();
-
     // Merge-in the pane dependencies.
-    foreach ($this->getPanes() as $id => $pane) {
-      if (!isset($this->configuration['panes'][$id])) {
-        continue;
-      }
+    foreach ($this->getPanes() as $pane) {
       foreach ($pane->calculateDependencies() as $dependency_type => $list) {
         foreach ($list as $name) {
           $dependencies[$dependency_type][] = $name;

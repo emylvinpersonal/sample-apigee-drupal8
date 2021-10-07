@@ -110,7 +110,7 @@ class EmptyCartButton extends AreaPluginBase {
     $form[$this->options['id']]['#tree'] = TRUE;
     $form['actions']['empty_cart'] = [
       '#type' => 'submit',
-      '#value' => $this->t('Empty cart'),
+      '#value' => t('Empty cart'),
       '#empty_cart_button' => TRUE,
       '#attributes' => [
         'class' => ['empty-cart-button'],

@@ -81,7 +81,7 @@
 		"name": "dolar bahamski"
 	},
 	"BBD": {
-		"name": "dolar barbadoski"
+		"name": "dolar Barbadosu"
 	},
 	"BZD": {
 		"name": "dolar belizeński"
@@ -126,7 +126,7 @@
 		"name": "dolar surinamski"
 	},
 	"TTD": {
-		"name": "dolar trynidadzki"
+		"name": "dolar Trynidadu i Tobago"
 	},
 	"XCD": {
 		"name": "dolar wschodniokaraibski",
@@ -162,7 +162,7 @@
 	},
 	"XOF": {
 		"name": "frank CFA",
-		"symbol": "F CFA"
+		"symbol": "CFA"
 	},
 	"XAF": {
 		"name": "frank CFA BEAC",

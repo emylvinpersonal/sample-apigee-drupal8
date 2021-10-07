@@ -107,7 +107,7 @@
 	},
 	"CAD": {
 		"name": "dollar canadien",
-		"symbol": "$ CA"
+		"symbol": "$"
 	},
 	"HKD": {
 		"name": "dollar de Hong Kong",
@@ -271,7 +271,7 @@
 		"name": "livre de Sainte-Hélène"
 	},
 	"FKP": {
-		"name": "livre des îles Malouines"
+		"name": "livre des Îles Malouines"
 	},
 	"EGP": {
 		"name": "livre égyptienne"

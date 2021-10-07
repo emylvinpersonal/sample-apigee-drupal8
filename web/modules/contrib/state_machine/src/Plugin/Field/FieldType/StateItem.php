@@ -2,8 +2,6 @@
 
 namespace Drupal\state_machine\Plugin\Field\FieldType;
 
-use Drupal\Core\Entity\ContentEntityStorageInterface;
-use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemBase;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -34,13 +32,6 @@ class StateItem extends FieldItemBase implements StateItemInterface, OptionsProv
    * @var string
    */
   protected $originalValue;
-
-  /**
-   * The transition to apply.
-   *
-   * @var \Drupal\state_machine\Plugin\Workflow\WorkflowTransition
-   */
-  protected $transitionToApply;
 
   /**
    * {@inheritdoc}
@@ -271,29 +262,9 @@ class StateItem extends FieldItemBase implements StateItemInterface, OptionsProv
    * {@inheritdoc}
    */
   public function getLabel() {
-    return $this->getStateLabel($this->value);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getOriginalLabel() {
-    return $this->getStateLabel($this->originalValue);
-  }
-
-  /**
-   * Gets the state label for the given state ID.
-   *
-   * @param string $state_id
-   *   The state ID.
-   *
-   * @return string
-   *   The state label.
-   */
-  protected function getStateLabel($state_id) {
-    $label = $state_id;
+    $label = $this->value;
     if ($workflow = $this->getWorkflow()) {
-      $state = $workflow->getState($state_id);
+      $state = $workflow->getState($this->value);
       if ($state) {
         $label = $state->getLabel();
       }
@@ -316,21 +287,7 @@ class StateItem extends FieldItemBase implements StateItemInterface, OptionsProv
   /**
    * {@inheritdoc}
    */
-  public function isTransitionAllowed($transition_id) {
-    $allowed_transitions = $this->getTransitions();
-    return isset($allowed_transitions[$transition_id]);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function applyTransition(WorkflowTransition $transition) {
-    if (!$this->isTransitionAllowed($transition->getId())) {
-      throw new \InvalidArgumentException(sprintf('The transition "%s" is currently not allowed. (Current state: "%s".)', $transition->getId(), $this->getId()));
-    }
-    // Store the transition to apply, to ensure we're applying the requested
-    // transition instead of guessing based on the original state.
-    $this->transitionToApply = $transition;
     $this->setValue(['value' => $transition->getToState()->getId()]);
   }
 
@@ -366,9 +323,6 @@ class StateItem extends FieldItemBase implements StateItemInterface, OptionsProv
       $this->dispatchTransitionEvent('post_transition');
     }
     $this->originalValue = $this->value;
-    // Nullify the transition to apply, to ensure the next entity save
-    // doesn't trigger the same transition by mistake.
-    $this->transitionToApply = NULL;
   }
 
   /**
@@ -380,7 +334,7 @@ class StateItem extends FieldItemBase implements StateItemInterface, OptionsProv
   protected function dispatchTransitionEvent($phase) {
     /** @var \Drupal\state_machine\Plugin\Workflow\WorkflowInterface $workflow */
     $workflow = $this->getWorkflow();
-    $transition = $this->transitionToApply ?? $workflow->findTransition($this->originalValue, $this->value);
+    $transition = $workflow->findTransition($this->originalValue, $this->value);
     if ($transition) {
       $field_name = $this->getFieldDefinition()->getName();
       $group_id = $workflow->getGroup();
@@ -399,61 +353,6 @@ class StateItem extends FieldItemBase implements StateItemInterface, OptionsProv
         $event_dispatcher->dispatch($event_id, $event);
       }
     }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function generateSampleValue(FieldDefinitionInterface $field_definition) {
-    // Attempt to determine the right workflow to use.
-    if ($callback = $field_definition->getSetting('workflow_callback')) {
-      $entity_type_id = $field_definition->getTargetEntityTypeId();
-      $entity_storage = \Drupal::entityTypeManager()->getStorage($entity_type_id);
-
-      if (!$entity_storage instanceof ContentEntityStorageInterface) {
-        return [];
-      }
-
-      $values = [];
-      // Attempt to create a sample entity with at least the bundle set.
-      if ($bundle_key = $entity_storage->getEntityType()->getKey('bundle')) {
-        if ($field_definition->getTargetBundle()) {
-          $bundle = $field_definition->getTargetBundle();
-        }
-        else {
-          $bundle_ids = \Drupal::service('entity_type.bundle.info')->getBundleInfo($entity_type_id);
-          $bundle = array_rand($bundle_ids);
-        }
-        $values[$bundle_key] = $bundle;
-      }
-      $entity = $entity_storage->create($values);
-      $workflow_id = call_user_func($callback, $entity);
-    }
-    else {
-      $workflow_id = $field_definition->getSetting('workflow');
-    }
-
-    // The workflow could not be determined, cannot generate a sample value.
-    if (empty($workflow_id)) {
-      return [];
-    }
-
-    /** @var \Drupal\state_machine\WorkflowManagerInterface $workflow_manager */
-    $workflow_manager = \Drupal::service('plugin.manager.workflow');
-    /** @var \Drupal\state_machine\Plugin\Workflow\WorkflowInterface $workflow */
-    $workflow = $workflow_manager->createInstance($workflow_id);
-
-    // Select states that allow at least one transition.
-    $candidate_states = $states = $workflow->getStates();
-    foreach ($candidate_states as $key => $candidate) {
-      if (empty($workflow->getPossibleTransitions($candidate->getId()))) {
-        unset($states[$key]);
-      }
-    }
-    $random_state = array_rand($states);
-
-    $values = ['value' => $states[$random_state]->getId()];
-    return $values;
   }
 
 }

@@ -57,6 +57,7 @@
 }
 
 .apigee-entity--app--view-mode-full .secret {
+  display: none;
   position: relative;
   z-index: auto;
 }

@@ -15,7 +15,7 @@ class Subdivision
     /**
      * The parent.
      *
-     * @var Subdivision|null
+     * @var Subdivision
      */
     protected $parent;
 
@@ -36,7 +36,7 @@ class Subdivision
     /**
      * The local subdivision code.
      *
-     * @var string|null
+     * @var string
      */
     protected $localCode;
 
@@ -50,21 +50,21 @@ class Subdivision
     /**
      * The local subdivision name.
      *
-     * @var string|null
+     * @var string
      */
     protected $localName;
 
     /**
      * The subdivision iso code.
      *
-     * @var string|null
+     * @var string
      */
     protected $isoCode;
 
     /**
      * The postal code pattern.
      *
-     * @var string|null
+     * @var string
      */
     protected $postalCodePattern;
 
@@ -85,7 +85,7 @@ class Subdivision
     /**
      * The locale.
      *
-     * @var string|null
+     * @var string
      */
     protected $locale;
 
@@ -111,7 +111,7 @@ class Subdivision
             'locale' => null,
             'local_code' => null,
             'local_name' => null,
-            'iso_code' => null,
+            'iso_code' => [],
             'postal_code_pattern' => null,
             'postal_code_pattern_type' => PatternType::getDefault(),
             'children' => new ArrayCollection(),
@@ -227,7 +227,7 @@ class Subdivision
      *
      * Only defined for administrative areas. Examples: 'US-CA', 'JP-01'.
      *
-     * @return string|null The subdivision ISO 3166-2 code.
+     * @return string The subdivision ISO 3166-2 code.
      */
     public function getIsoCode()
     {
@@ -240,8 +240,6 @@ class Subdivision
      * This is a regular expression pattern used to validate postal codes.
      *
      * @return string|null The postal code pattern.
-     *
-     * @deprecated since commerceguys/addressing 1.1.0.
      */
     public function getPostalCodePattern()
     {
@@ -252,8 +250,6 @@ class Subdivision
      * Gets the postal code pattern type.
      *
      * @return string|null The postal code pattern type.
-     *
-     * @deprecated since commerceguys/addressing 1.1.0.
      */
     public function getPostalCodePatternType()
     {

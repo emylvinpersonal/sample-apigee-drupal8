@@ -43,7 +43,7 @@ abstract class PaymentTransactionNormalizer extends ObjectNormalizer
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function supportsNormalization($data, $format = null)
     {

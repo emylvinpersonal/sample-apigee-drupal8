@@ -32,25 +32,18 @@ class PromotionListBuilder extends EntityListBuilder implements FormInterface {
   protected $usage;
 
   /**
-   * The disabled promotions.
+   * The entities being listed.
    *
    * @var \Drupal\commerce_promotion\Entity\PromotionInterface[]
    */
-  protected $disabledEntities = [];
-
-  /**
-   * The enabled promotions.
-   *
-   * @var \Drupal\commerce_promotion\Entity\PromotionInterface[]
-   */
-  protected $enabledEntities = [];
+  protected $entities = [];
 
   /**
    * The usage counts.
    *
    * @var array
    */
-  protected $usageCounts = [];
+  protected $usageCounts;
 
   /**
    * Whether tabledrag is enabled.
@@ -58,20 +51,6 @@ class PromotionListBuilder extends EntityListBuilder implements FormInterface {
    * @var bool
    */
   protected $hasTableDrag = TRUE;
-
-  /**
-   * Divide the limit by 2 (because we have 2 listings).
-   *
-   * @var int
-   */
-  protected $limit = 25;
-
-  /**
-   * The status condition value.
-   *
-   * @var bool
-   */
-  protected $statusCondition = TRUE;
 
   /**
    * Constructs a new PromotionListBuilder object.
@@ -120,24 +99,9 @@ class PromotionListBuilder extends EntityListBuilder implements FormInterface {
     // Sort the entities using the entity class's sort() method.
     uasort($entities, [$this->entityType->getClass(), 'sort']);
     // Load the usage counts for each promotion.
-    $this->usageCounts += $this->usage->loadMultiple($entities);
+    $this->usageCounts = $this->usage->loadMultiple($entities);
 
     return $entities;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function getEntityIds() {
-    $query = $this->getStorage()->getQuery()
-      ->condition('status', $this->statusCondition)
-      ->sort($this->entityType->getKey('id'));
-
-    // Only add the pager if a limit is specified.
-    if ($this->limit) {
-      $query->pager($this->limit);
-    }
-    return $query->execute();
   }
 
   /**
@@ -146,7 +110,6 @@ class PromotionListBuilder extends EntityListBuilder implements FormInterface {
   public function buildHeader() {
     $header['name'] = $this->t('Name');
     $header['usage'] = $this->t('Usage');
-    $header['customer_limit'] = $this->t('Per-customer limit');
     $header['start_date'] = $this->t('Start date');
     $header['end_date'] = $this->t('End date');
     if ($this->hasTableDrag) {
@@ -162,17 +125,17 @@ class PromotionListBuilder extends EntityListBuilder implements FormInterface {
     $current_usage = $this->usageCounts[$entity->id()];
     $usage_limit = $entity->getUsageLimit();
     $usage_limit = $usage_limit ?: $this->t('Unlimited');
-    $customer_limit = $entity->getCustomerUsageLimit();
-    $customer_limit = $customer_limit ?: $this->t('Unlimited');
     /** @var \Drupal\commerce_promotion\Entity\PromotionInterface $entity */
     $row['#attributes']['class'][] = 'draggable';
     $row['#weight'] = $entity->getWeight();
     $row['name'] = $entity->label();
+    if (!$entity->isEnabled()) {
+      $row['name'] .= ' (' . $this->t('Disabled') . ')';
+    }
     $row['usage'] = $current_usage . ' / ' . $usage_limit;
-    $row['customer_limit'] = $customer_limit;
     $row['start_date'] = $entity->getStartDate()->format('M jS Y H:i:s');
     $row['end_date'] = $entity->getEndDate() ? $entity->getEndDate()->format('M jS Y H:i:s') : '—';
-    if ($this->hasTableDrag && $entity->isEnabled()) {
+    if ($this->hasTableDrag) {
       $row['weight'] = [
         '#type' => 'weight',
         '#title' => $this->t('Weight for @title', ['@title' => $entity->label()]),
@@ -190,7 +153,12 @@ class PromotionListBuilder extends EntityListBuilder implements FormInterface {
    */
   public function render() {
     $build = $this->formBuilder->getForm($this);
-    $build['#attached']['library'][] = 'commerce_promotion/admin_list';
+    // Only add the pager if a limit is specified.
+    if ($this->limit) {
+      $build['pager'] = [
+        '#type' => 'pager',
+      ];
+    }
 
     return $build;
   }
@@ -199,75 +167,36 @@ class PromotionListBuilder extends EntityListBuilder implements FormInterface {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    // Start by loading the enabled promotions.
-    $this->enabledEntities = $this->load();
-    if (count($this->enabledEntities) <= 1) {
+    $this->entities = $this->load();
+    if (count($this->entities) <= 1) {
       $this->hasTableDrag = FALSE;
     }
     $delta = 10;
     // Dynamically expand the allowed delta based on the number of entities.
-    $count = count($this->enabledEntities);
+    $count = count($this->entities);
     if ($count > 20) {
       $delta = ceil($count / 2);
     }
 
-    $table_header = $this->buildHeader();
-    $form['enabled_promotions'] = [
+    $form['promotions'] = [
       '#type' => 'table',
-      '#header' => $table_header,
-      '#empty' => $this->t('There are no enabled @label yet.', ['@label' => $this->entityType->getPluralLabel()]),
-      '#caption' => $this->t('Enabled'),
+      '#header' => $this->buildHeader(),
+      '#empty' => $this->t('There are no @label yet.', ['@label' => $this->entityType->getPluralLabel()]),
     ];
-
-    // Only add the pager if a limit is specified.
-    if ($this->limit) {
-      $form['pager_enabled_promotions'] = [
-        '#type' => 'pager',
-        '#element' => 0,
-      ];
-    }
-
-    // Now load the disabled promotions.
-    $this->statusCondition = FALSE;
-    $this->disabledEntities = $this->load();
-    $form['disabled_promotions'] = [
-      '#type' => 'table',
-      // Table dragging is only enabled for enabled promotions, therefore,
-      // removing the "weight" header if present.
-      '#header' => array_diff_key($table_header, ['weight' => 'weight']),
-      '#empty' => $this->t('There are no disabled @label.', ['@label' => $this->entityType->getPluralLabel()]),
-      '#caption' => $this->t('Disabled'),
-    ];
-
-    // Only add the pager if a limit is specified.
-    if ($this->limit) {
-      $form['pager_disabled_promotions'] = [
-        '#type' => 'pager',
-        '#element' => 1,
-      ];
-    }
-
-    $entities = array_merge($this->enabledEntities, $this->disabledEntities);
-    foreach ($entities as $entity) {
+    foreach ($this->entities as $entity) {
       $row = $this->buildRow($entity);
       $row['name'] = ['#markup' => $row['name']];
       $row['usage'] = ['#markup' => $row['usage']];
-      $row['customer_limit'] = ['#markup' => $row['customer_limit']];
       $row['start_date'] = ['#markup' => $row['start_date']];
       $row['end_date'] = ['#markup' => $row['end_date']];
       if (isset($row['weight'])) {
         $row['weight']['#delta'] = $delta;
       }
-      if ($entity->isEnabled()) {
-        $form['enabled_promotions'][$entity->id()] = $row;
-      }
-      else {
-        $form['disabled_promotions'][$entity->id()] = $row;
-      }
+      $form['promotions'][$entity->id()] = $row;
     }
 
     if ($this->hasTableDrag) {
-      $form['enabled_promotions']['#tabledrag'][] = [
+      $form['promotions']['#tabledrag'][] = [
         'action' => 'order',
         'relationship' => 'sibling',
         'group' => 'weight',
@@ -275,7 +204,7 @@ class PromotionListBuilder extends EntityListBuilder implements FormInterface {
       $form['actions']['#type'] = 'actions';
       $form['actions']['submit'] = [
         '#type' => 'submit',
-        '#value' => $this->t('Save'),
+        '#value' => t('Save'),
         '#button_type' => 'primary',
       ];
     }
@@ -294,11 +223,11 @@ class PromotionListBuilder extends EntityListBuilder implements FormInterface {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    foreach ($form_state->getValue('enabled_promotions') as $id => $value) {
-      if (isset($this->enabledEntities[$id]) && $this->enabledEntities[$id]->getWeight() != $value['weight']) {
+    foreach ($form_state->getValue('promotions') as $id => $value) {
+      if (isset($this->entities[$id]) && $this->entities[$id]->getWeight() != $value['weight']) {
         // Save entity only when its weight was changed.
-        $this->enabledEntities[$id]->setWeight($value['weight']);
-        $this->enabledEntities[$id]->save();
+        $this->entities[$id]->setWeight($value['weight']);
+        $this->entities[$id]->save();
       }
     }
   }
@@ -316,21 +245,6 @@ class PromotionListBuilder extends EntityListBuilder implements FormInterface {
           'commerce_promotion' => $entity->id(),
         ]),
       ];
-
-      if (!$entity->isEnabled() && $entity->hasLinkTemplate('enable-form')) {
-        $operations['enable'] = [
-          'title' => $this->t('Enable'),
-          'weight' => -10,
-          'url' => $this->ensureDestination($entity->toUrl('enable-form')),
-        ];
-      }
-      elseif ($entity->hasLinkTemplate('disable-form')) {
-        $operations['disable'] = [
-          'title' => $this->t('Disable'),
-          'weight' => 40,
-          'url' => $this->ensureDestination($entity->toUrl('disable-form')),
-        ];
-      }
     }
 
     return $operations;

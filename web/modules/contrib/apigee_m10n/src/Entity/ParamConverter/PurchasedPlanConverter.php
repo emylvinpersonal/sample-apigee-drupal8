@@ -73,7 +73,7 @@ class PurchasedPlanConverter extends EntityConverter implements ParamConverterIn
    */
   protected function loadPurchasedPlanById($developer_id, $purchased_plan_id) {
     try {
-      $purchased_plan = $this->entityTypeManager
+      $purchased_plan = $this->entityManager
         ->getStorage('purchased_plan')
         ->loadById($developer_id, $purchased_plan_id);
     }

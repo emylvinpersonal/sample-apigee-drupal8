@@ -24,7 +24,7 @@ use Apigee\Edge\Api\Monetization\Normalizer\TermsAndConditionsNormalizer;
 class LegalEntityTermsAndConditionsSerializer extends EntitySerializer
 {
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public static function getEntityTypeSpecificDefaultNormalizers(): array
     {

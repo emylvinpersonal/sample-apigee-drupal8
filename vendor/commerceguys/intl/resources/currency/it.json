@@ -51,6 +51,9 @@
 	"GMD": {
 		"name": "dalasi gambiano"
 	},
+	"MKD": {
+		"name": "denar macedone"
+	},
 	"DZD": {
 		"name": "dinaro algerino"
 	},
@@ -68,9 +71,6 @@
 	},
 	"LYD": {
 		"name": "dinaro libico"
-	},
-	"MKD": {
-		"name": "dinaro macedone"
 	},
 	"RSD": {
 		"name": "dinaro serbo"
@@ -158,7 +158,8 @@
 		"name": "dollaro zimbabwiano (2009)"
 	},
 	"VND": {
-		"name": "dong vietnamita"
+		"name": "dong vietnamita",
+		"symbol": "₫"
 	},
 	"AMD": {
 		"name": "dram armeno"
@@ -181,7 +182,7 @@
 	},
 	"XOF": {
 		"name": "franco CFA BCEAO",
-		"symbol": "F CFA"
+		"symbol": "CFA"
 	},
 	"XAF": {
 		"name": "franco CFA BEAC",
@@ -230,11 +231,11 @@
 	"HRK": {
 		"name": "kuna croata"
 	},
+	"ZMW": {
+		"name": "kwacha dello Zambia"
+	},
 	"MWK": {
 		"name": "kwacha malawiano"
-	},
-	"ZMW": {
-		"name": "kwacha zambiano"
 	},
 	"AOA": {
 		"name": "kwanza angolano"
@@ -334,8 +335,7 @@
 		"name": "peso dominicano"
 	},
 	"PHP": {
-		"name": "peso filippino",
-		"symbol": "₱"
+		"name": "peso filippino"
 	},
 	"MXN": {
 		"name": "peso messicano"
@@ -396,7 +396,8 @@
 		"name": "rupia di Sri Lanka"
 	},
 	"INR": {
-		"name": "rupia indiana"
+		"name": "rupia indiana",
+		"symbol": "₹"
 	},
 	"IDR": {
 		"name": "rupia indonesiana"

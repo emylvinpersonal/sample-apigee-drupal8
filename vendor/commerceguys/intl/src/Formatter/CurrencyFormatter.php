@@ -238,18 +238,4 @@ class CurrencyFormatter implements CurrencyFormatterInterface
             throw new InvalidArgumentException(sprintf('Unrecognized currency display "%s".', $options['currency_display']));
         }
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getLocalizedSymbols(NumberFormat $numberFormat): array
-    {
-        return [
-            '.' => $numberFormat->getDecimalCurrencySeparator(),
-            ',' => $numberFormat->getGroupingCurrencySeparator(),
-            '+' => $numberFormat->getPlusSign(),
-            '-' => $numberFormat->getMinusSign(),
-            '%' => $numberFormat->getPercentSign(),
-        ];
-    }
 }

@@ -3,7 +3,6 @@
 namespace Drupal\Tests\commerce_order\Kernel;
 
 use Drupal\commerce\Context;
-use Drupal\commerce_order\AvailabilityResult;
 use Drupal\commerce_order\Entity\Order;
 use Drupal\commerce_order\Entity\OrderItem;
 use Drupal\commerce_price\Price;
@@ -25,7 +24,7 @@ final class PurchasedEntityConstraintValidatorTest extends OrderKernelTestBase {
    * @var array
    */
   public static $modules = [
-    'commerce_order_test',
+    'commerce_test',
   ];
 
   /**
@@ -35,22 +34,23 @@ final class PurchasedEntityConstraintValidatorTest extends OrderKernelTestBase {
    *   The SKU. SKUs prefixed with TEST_* will fail availability checks.
    * @param string $order_state
    *   The order state.
-   * @param \Drupal\commerce_order\AvailabilityResult $expected_check_result
-   *   The expected availability result.
+   * @param bool $expected_check_result
+   *   The variation status.
    * @param bool $expected_constraint
    *   The expected constraint count.
    *
    * @dataProvider dataProviderCheckerData
    * @covers ::validate
    */
-  public function testAvailabilityConstraint($sku, $order_state, AvailabilityResult $expected_check_result, $expected_constraint) {
+  public function testAvailabilityConstraint($sku, $order_state, $expected_check_result, $expected_constraint) {
     $context = new Context($this->createUser(), $this->store);
-    $availability_manager = $this->container->get('commerce_order.availability_manager');
+    $checker = $this->container->get('commerce.availability_manager');
 
     $product_variation = $this->createTestProductVariation([
       'sku' => $sku,
       'price' => new Price('10.0', 'USD'),
     ]);
+    $this->assertEquals($expected_check_result, $checker->check($product_variation, 1, $context));
 
     $order = Order::create([
       'type' => 'default',
@@ -66,7 +66,6 @@ final class PurchasedEntityConstraintValidatorTest extends OrderKernelTestBase {
     ]);
     assert($order_item instanceof OrderItem);
     $constraints = $order_item->validate();
-    $this->assertEquals($expected_check_result, $availability_manager->check($order_item, $context));
     if ($expected_constraint) {
       $this->assertCount(1, $constraints);
       $this->assertEquals('<em class="placeholder">test product</em> is not available with a quantity of <em class="placeholder">1</em>.', $constraints->offsetGet(0)->getMessage());
@@ -189,10 +188,10 @@ final class PurchasedEntityConstraintValidatorTest extends OrderKernelTestBase {
    *   The test data.
    */
   public function dataProviderCheckerData() {
-    yield ['SKU1234', 'draft', AvailabilityResult::neutral(), FALSE];
-    yield ['TEST_SKU1234', 'draft', AvailabilityResult::unavailable(), TRUE];
-    yield ['SKU1234', 'complete', AvailabilityResult::neutral(), FALSE];
-    yield ['TEST_SKU1234', 'complete', AvailabilityResult::unavailable(), FALSE];
+    yield ['SKU1234', 'draft', TRUE, FALSE];
+    yield ['TEST_SKU1234', 'draft', FALSE, TRUE];
+    yield ['SKU1234', 'complete', TRUE, FALSE];
+    yield ['TEST_SKU1234', 'complete', FALSE, FALSE];
   }
 
   /**

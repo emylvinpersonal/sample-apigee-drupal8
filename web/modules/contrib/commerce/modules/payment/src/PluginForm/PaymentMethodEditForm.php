@@ -129,7 +129,7 @@ class PaymentMethodEditForm extends PaymentMethodFormBase {
     ];
     $element['expiration']['month'] = [
       '#type' => 'select',
-      '#title' => $this->t('Month'),
+      '#title' => t('Month'),
       '#options' => $months,
       '#default_value' => str_pad($payment_method->get('card_exp_month')->value, 2, '0', STR_PAD_LEFT),
       '#required' => TRUE,
@@ -141,7 +141,7 @@ class PaymentMethodEditForm extends PaymentMethodFormBase {
     ];
     $element['expiration']['year'] = [
       '#type' => 'select',
-      '#title' => $this->t('Year'),
+      '#title' => t('Year'),
       '#options' => $years,
       '#default_value' => $payment_method->get('card_exp_year')->value,
       '#required' => TRUE,

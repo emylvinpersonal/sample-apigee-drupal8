@@ -5,7 +5,6 @@ namespace Drupal\Tests\commerce_store\Kernel\Entity;
 use Drupal\commerce_price\Entity\Currency;
 use Drupal\commerce_store\Entity\Store;
 use Drupal\Tests\commerce\Kernel\CommerceKernelTestBase;
-use Drupal\user\UserInterface;
 
 /**
  * Tests the Store entity.
@@ -26,7 +25,7 @@ class StoreTest extends CommerceKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp(): void {
+  protected function setUp() {
     parent::setUp();
 
     $user = $this->createUser();
@@ -96,18 +95,10 @@ class StoreTest extends CommerceKernelTestBase {
     $this->assertEquals($this->user, $store->getOwner());
     $this->assertEquals($this->user->id(), $store->getOwnerId());
     $store->setOwnerId(0);
-    $this->assertInstanceOf(UserInterface::class, $store->getOwner());
-    $this->assertTrue($store->getOwner()->isAnonymous());
+    $this->assertEquals(NULL, $store->getOwner());
     $store->setOwnerId($this->user->id());
     $this->assertEquals($this->user, $store->getOwner());
     $this->assertEquals($this->user->id(), $store->getOwnerId());
-
-    // Ensure that we don't store a broken reference to the store owner.
-    $store->setOwnerId(900);
-    $this->assertTrue($store->getOwner()->isAnonymous());
-    $this->assertEquals(900, $store->getOwnerId());
-    $store->save();
-    $this->assertEquals(0, $store->getOwnerId());
   }
 
   /**

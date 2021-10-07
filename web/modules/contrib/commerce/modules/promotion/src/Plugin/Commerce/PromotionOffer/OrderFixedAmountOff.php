@@ -33,18 +33,11 @@ class OrderFixedAmountOff extends OrderPromotionOfferBase {
     if ($subtotal_price->getCurrencyCode() != $amount->getCurrencyCode()) {
       return;
     }
-    $total_price = $order->getTotalPrice();
-    // The promotion amount can't be larger than the total, to avoid
+    // The promotion amount can't be larger than the subtotal, to avoid
     // potentially having a negative order total.
-    if ($total_price && $amount->greaterThan($total_price)) {
-      $amount = $total_price;
+    if ($amount->greaterThan($subtotal_price)) {
+      $amount = $subtotal_price;
     }
-
-    // Skip applying the promotion if there's no amount to discount.
-    if ($amount->isZero()) {
-      return;
-    }
-
     // Split the amount between order items.
     $amounts = $this->splitter->split($order, $amount);
 

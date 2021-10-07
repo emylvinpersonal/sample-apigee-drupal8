@@ -16,8 +16,8 @@ class OrderItemInlineForm extends EntityInlineForm {
    */
   public function getEntityTypeLabels() {
     $labels = [
-      'singular' => $this->t('order item'),
-      'plural' => $this->t('order items'),
+      'singular' => t('order item'),
+      'plural' => t('order items'),
     ];
     return $labels;
   }
@@ -29,12 +29,12 @@ class OrderItemInlineForm extends EntityInlineForm {
     $fields = parent::getTableFields($bundles);
     $fields['unit_price'] = [
       'type' => 'field',
-      'label' => $this->t('Unit price'),
+      'label' => t('Unit price'),
       'weight' => 2,
     ];
     $fields['quantity'] = [
       'type' => 'field',
-      'label' => $this->t('Quantity'),
+      'label' => t('Quantity'),
       'weight' => 3,
     ];
 
@@ -46,14 +46,13 @@ class OrderItemInlineForm extends EntityInlineForm {
    */
   public function entityForm(array $entity_form, FormStateInterface $form_state) {
     $entity_form = parent::entityForm($entity_form, $form_state);
-    $entity_form['#entity_builders'][] = [get_class($this), 'buildOrderItem'];
+    $entity_form['#entity_builders'][] = [get_class($this), 'populateTitle'];
 
     return $entity_form;
   }
 
   /**
-   * Entity builder: populates the order item title from the purchased entity
-   * and set the reference to the order being edited.
+   * Entity builder: populates the order item title from the purchased entity.
    *
    * @param string $entity_type
    *   The entity type identifier.
@@ -64,13 +63,10 @@ class OrderItemInlineForm extends EntityInlineForm {
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The current state of the form.
    */
-  public static function buildOrderItem($entity_type, OrderItemInterface $order_item, array $form, FormStateInterface $form_state) {
+  public static function populateTitle($entity_type, OrderItemInterface $order_item, array $form, FormStateInterface $form_state) {
     $purchased_entity = $order_item->getPurchasedEntity();
-    if ($order_item->isNew()) {
-      if ($purchased_entity) {
-        $order_item->setTitle($purchased_entity->getOrderItemTitle());
-      }
-      $order_item->set('order_id', $form_state->getFormObject()->getEntity());
+    if ($order_item->isNew() && $purchased_entity) {
+      $order_item->setTitle($purchased_entity->getOrderItemTitle());
     }
   }
 

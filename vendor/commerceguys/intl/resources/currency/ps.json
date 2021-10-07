@@ -146,9 +146,6 @@
 	"THB": {
 		"name": "تهايي بات"
 	},
-	"TND": {
-		"name": "تيونسې دينار"
-	},
 	"TTD": {
 		"name": "ټرينيډاډ او ټوباګو ډالر"
 	},
@@ -171,9 +168,6 @@
 	"JMD": {
 		"name": "جمايکايي ډالر"
 	},
-	"SSP": {
-		"name": "جنوب سوډاني پونډ"
-	},
 	"ZAR": {
 		"name": "جنوبي افريقاېي رنډ"
 	},
@@ -193,7 +187,7 @@
 	},
 	"XOF": {
 		"name": "ختيځ افريقايي CFA فرانک",
-		"symbol": "F CFA"
+		"symbol": "CFA"
 	},
 	"XCD": {
 		"name": "ختيځ کربين ډالر",
@@ -281,8 +275,7 @@
 		"name": "فجي ډالر"
 	},
 	"PHP": {
-		"name": "فلپاينۍ پسو",
-		"symbol": "₱"
+		"name": "فلپاينۍ پسو"
 	},
 	"KZT": {
 		"name": "قازقستاني ټينج"
@@ -381,9 +374,6 @@
 	},
 	"EGP": {
 		"name": "مصري پونډ"
-	},
-	"MOP": {
-		"name": "مکانيس پټاکا"
 	},
 	"MGA": {
 		"name": "ملاګاسي ارياري"
@@ -486,8 +476,17 @@
 	"LSL": {
 		"name": "Lesotho Loti"
 	},
+	"MOP": {
+		"name": "Macanese Pataca"
+	},
 	"SVC": {
 		"name": "Salvadoran Colón"
+	},
+	"SSP": {
+		"name": "South Sudanese Pound"
+	},
+	"TND": {
+		"name": "Tunisian Dinar"
 	},
 	"UYW": {
 		"name": "Uruguayan Nominal Wage Index Unit"

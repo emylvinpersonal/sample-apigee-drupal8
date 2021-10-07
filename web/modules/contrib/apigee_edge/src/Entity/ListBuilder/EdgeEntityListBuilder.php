@@ -88,7 +88,7 @@ class EdgeEntityListBuilder extends EntityListBuilder {
   public static function createInstance(ContainerInterface $container, EntityTypeInterface $entity_type) {
     return new static(
       $entity_type,
-      $container->get('entity_type.manager'),
+      $container->get('entity.manager'),
       $container->get('config.factory')
     );
   }
@@ -126,20 +126,10 @@ class EdgeEntityListBuilder extends EntityListBuilder {
   public function render() {
     $settings = $this->getDisplaySettings();
     if ($this->usingDisplayType(static::VIEW_MODE_DISPLAY_TYPE)) {
-      $build = $this->renderUsingViewMode($settings['view_mode']);
-    }
-    else {
-      $build = parent::render();
+      return $this->renderUsingViewMode($settings['view_mode']);
     }
 
-    // Add cache contexts.
-    $build['#cache'] = [
-      'contexts' => $this->entityType->getListCacheContexts(),
-      'tags' => $this->entityType->getListCacheTags(),
-      'max-age' => $this->getCacheMaxAge(),
-    ];
-
-    return $build;
+    return parent::render();
   }
 
   /**
@@ -157,6 +147,10 @@ class EdgeEntityListBuilder extends EntityListBuilder {
       '#entities' => $this->load(),
       '#entity_type' => $this->entityType,
       '#view_mode' => $view_mode,
+      '#cache' => [
+        'contexts' => $this->entityType->getListCacheContexts(),
+        'tags' => $this->entityType->getListCacheTags(),
+      ]
     ];
   }
 
@@ -189,16 +183,6 @@ class EdgeEntityListBuilder extends EntityListBuilder {
     return $this->configFactory
       ->get("apigee_edge.display_settings.{$this->entityTypeId}")
       ->getRawData();
-  }
-
-  /**
-   * Returns the cache max age.
-   *
-   * @return int
-   *   The cache max age.
-   */
-  protected function getCacheMaxAge() {
-    return 0;
   }
 
 }

@@ -20,7 +20,6 @@ content:
 hidden:
   billing_countries: true
   default_currency: true
-  is_default: true
   mail: true
   name: true
   timezone: true

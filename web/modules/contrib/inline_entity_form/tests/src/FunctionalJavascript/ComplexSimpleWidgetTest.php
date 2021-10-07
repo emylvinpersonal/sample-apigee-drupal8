@@ -16,7 +16,7 @@ class ComplexSimpleWidgetTest extends InlineEntityFormTestBase {
    *
    * @var array
    */
-  protected static $modules = [
+  public static $modules = [
     'inline_entity_form_test',
     'field',
     'field_ui',
@@ -25,7 +25,7 @@ class ComplexSimpleWidgetTest extends InlineEntityFormTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp(): void {
+  protected function setUp() {
     parent::setUp();
 
     $this->user = $this->createUser([

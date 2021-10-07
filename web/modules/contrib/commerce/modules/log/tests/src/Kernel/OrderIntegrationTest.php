@@ -9,9 +9,6 @@ use Drupal\commerce_price\Price;
 use Drupal\commerce_product\Entity\Product;
 use Drupal\commerce_product\Entity\ProductVariation;
 use Drupal\commerce_product\Entity\ProductVariationType;
-use Drupal\Component\Render\FormattableMarkup;
-use Drupal\Core\DependencyInjection\ContainerBuilder;
-use Drupal\Core\DependencyInjection\ServiceModifierInterface;
 use Drupal\profile\Entity\Profile;
 use Drupal\Tests\commerce_order\Kernel\OrderKernelTestBase;
 use Drupal\user\Entity\User;
@@ -21,7 +18,7 @@ use Drupal\user\Entity\User;
  *
  * @group commerce
  */
-class OrderIntegrationTest extends OrderKernelTestBase implements ServiceModifierInterface {
+class OrderIntegrationTest extends OrderKernelTestBase {
 
   /**
    * A sample order.
@@ -51,13 +48,12 @@ class OrderIntegrationTest extends OrderKernelTestBase implements ServiceModifie
    */
   public static $modules = [
     'commerce_log',
-    'commerce_log_test',
   ];
 
   /**
    * {@inheritdoc}
    */
-  protected function setUp(): void {
+  protected function setUp() {
     parent::setUp();
 
     $this->installEntitySchema('commerce_log');
@@ -118,10 +114,20 @@ class OrderIntegrationTest extends OrderKernelTestBase implements ServiceModifie
   }
 
   /**
-   * {@inheritdoc}
+   * Tests that a log is generated for the cancel transition.
    */
-  public function alter(ContainerBuilder $container) {
-    $container->removeDefinition('commerce_order.order_receipt_subscriber');
+  public function testCancelLog() {
+    // Draft -> Canceled.
+    $this->order->getState()->applyTransitionById('cancel');
+    $this->order->save();
+
+    $logs = $this->logStorage->loadMultipleByEntity($this->order);
+    $this->assertEquals(1, count($logs));
+    $log = reset($logs);
+    $build = $this->logViewBuilder->view($log);
+    $this->render($build);
+
+    $this->assertText('The order was canceled.');
   }
 
   /**
@@ -138,7 +144,7 @@ class OrderIntegrationTest extends OrderKernelTestBase implements ServiceModifie
     $build = $this->logViewBuilder->view($log);
     $this->render($build);
 
-    $this->assertText('Order moved from Draft to Validation by the Place order transition.');
+    $this->assertText('The order was placed.');
 
     // Placed -> Validated.
     $this->order->getState()->applyTransitionById('validate');
@@ -150,7 +156,7 @@ class OrderIntegrationTest extends OrderKernelTestBase implements ServiceModifie
     $build = $this->logViewBuilder->view($log);
     $this->render($build);
 
-    $this->assertText('Order moved from Validation to Fulfillment by the Validate order transition.');
+    $this->assertText('The order was validated.');
 
     // Validated -> Fulfilled.
     $this->order->getState()->applyTransitionById('fulfill');
@@ -162,7 +168,7 @@ class OrderIntegrationTest extends OrderKernelTestBase implements ServiceModifie
     $build = $this->logViewBuilder->view($log);
     $this->render($build);
 
-    $this->assertText('Order moved from Fulfillment to Completed by the Fulfill order transition.');
+    $this->assertText('The order was fulfilled.');
   }
 
   /**
@@ -184,49 +190,6 @@ class OrderIntegrationTest extends OrderKernelTestBase implements ServiceModifie
     $build = $this->logViewBuilder->view($log);
     $this->render($build);
     $this->assertText("The order was assigned to {$new_user->getDisplayName()}.");
-  }
-
-  /**
-   * Tests that a log is generated when any order email is sent.
-   */
-  public function testEmailLog() {
-    $order_receipt_mail = $this->container->get('commerce_order.order_receipt_mail');
-    $order_receipt_mail->send($this->order);
-    $this->order->setData('simulate_mail_failure', TRUE);
-    $order_receipt_mail->send($this->order);
-    $this->order->unsetData('simulate_mail_failure');
-    $subject = sprintf('Order %s test mail', $this->order->getOrderNumber());
-    $params = [
-      'id' => 'order_test',
-      'from' => $this->order->getStore()->getEmail(),
-      'order' => $this->order,
-    ];
-    $mail_handler = $this->container->get('commerce.mail_handler');
-    $mail_handler->sendMail($this->order->getEmail(), $subject, [], $params);
-    $this->order->setData('simulate_mail_failure', TRUE);
-    $mail_handler->sendMail($this->order->getEmail(), $subject, [], $params);
-
-    $logs = $this->logStorage->loadMultipleByEntity($this->order);
-    $this->assertEquals(4, count($logs));
-    $success_log = reset($logs);
-    $build = $this->logViewBuilder->view($success_log);
-    $this->render($build);
-    $this->assertText(new FormattableMarkup('Order receipt email sent to @mail.', ['@mail' => $this->order->getEmail()]));
-
-    $failure_log = $logs[2];
-    $build = $this->logViewBuilder->view($failure_log);
-    $this->render($build);
-    $this->assertText(new FormattableMarkup('Order receipt email failed to send to @mail.', ['@mail' => $this->order->getEmail()]));
-
-    $order_test_log = $logs[3];
-    $build = $this->logViewBuilder->view($order_test_log);
-    $this->render($build);
-    $this->assertText(new FormattableMarkup('Email "order_test" sent to @mail.', ['@mail' => $this->order->getEmail()]));
-
-    $order_test_failure_log = $logs[4];
-    $build = $this->logViewBuilder->view($order_test_failure_log);
-    $this->render($build);
-    $this->assertText(new FormattableMarkup('Failed to send "order_test" to @mail.', ['@mail' => $this->order->getEmail()]));
   }
 
 }

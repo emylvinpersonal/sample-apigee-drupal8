@@ -179,8 +179,6 @@ final class Locale
         'es-US' => 'es-419',
         'es-UY' => 'es-419',
         'es-VE' => 'es-419',
-        'nb' => 'no',
-        'nn' => 'no',
         'pt-AO' => 'pt-PT',
         'pt-CH' => 'pt-PT',
         'pt-CV' => 'pt-PT',

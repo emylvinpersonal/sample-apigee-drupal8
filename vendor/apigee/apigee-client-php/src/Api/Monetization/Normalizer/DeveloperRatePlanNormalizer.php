@@ -23,7 +23,7 @@ use Apigee\Edge\Api\Monetization\Entity\DeveloperRatePlanInterface;
 class DeveloperRatePlanNormalizer extends LegalEntityRatePlanNormalizer
 {
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function supportsNormalization($data, $format = null)
     {

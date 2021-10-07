@@ -41,7 +41,7 @@ class MailHandlerThemeTest extends CommerceKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp(): void {
+  protected function setUp() {
     parent::setUp();
 
     $this->installConfig(['mailsystem']);
@@ -76,7 +76,7 @@ class MailHandlerThemeTest extends CommerceKernelTestBase {
     $this->assertFalse(isset($email['headers']['Bcc']));
     $this->assertEquals($this->store->getEmail(), $email['from']);
     $this->assertEquals('Hello, customer!', $email['subject']);
-    $this->assertStringNotContainsString('Commerce test theme', $email['body']);
+    $this->assertNotContains('Commerce test theme', $email['body']);
   }
 
   /**
@@ -105,7 +105,7 @@ class MailHandlerThemeTest extends CommerceKernelTestBase {
     $this->assertFalse(isset($email['headers']['Bcc']));
     $this->assertEquals($this->store->getEmail(), $email['from']);
     $this->assertEquals('Hello, customer!', $email['subject']);
-    $this->assertStringContainsString('Commerce test theme', $email['body']);
+    $this->assertContains('Commerce test theme', $email['body']);
   }
 
 }

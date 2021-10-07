@@ -40,7 +40,6 @@ mix.browserSync({
  */
 mix
   .sass('src/sass/apigee-kickstart.style.scss', 'css')
-  .sass('src/sass/apigee-kickstart.smartdocs.scss', 'css')
   .sass('src/sass/apigee-kickstart.monetization.scss', 'css')
   .sass('src/sass/apigee-kickstart.monetization.add-credit.scss', 'css');
 
@@ -53,4 +52,5 @@ mix
   .js('src/js/apigee-kickstart.script.js', 'js')
   .js('src/js/apigee-kickstart.commerce.authnet.js', 'js')
   .js('src/js/apigee-kickstart.commerce.stripe.js', 'js')
-  .js('src/js/modernizr.js', 'js');
+  .js('src/js/modernizr.js', 'js')
+;
