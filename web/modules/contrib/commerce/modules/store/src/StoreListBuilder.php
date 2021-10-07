@@ -15,8 +15,8 @@ class StoreListBuilder extends EntityListBuilder {
    * {@inheritdoc}
    */
   public function buildHeader() {
-    $header['name'] = $this->t('Name');
-    $header['type'] = $this->t('Type');
+    $header['name'] = t('Name');
+    $header['type'] = t('Type');
     return $header + parent::buildHeader();
   }
 

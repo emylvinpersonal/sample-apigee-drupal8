@@ -183,9 +183,6 @@ class OrderItem extends CommerceContentEntityBase implements OrderItemInterface 
    */
   public function addAdjustment(Adjustment $adjustment) {
     $this->get('adjustments')->appendItem($adjustment);
-    if ($this->getOrder()) {
-      $this->getOrder()->recalculateTotalPrice();
-    }
     return $this;
   }
 
@@ -194,9 +191,6 @@ class OrderItem extends CommerceContentEntityBase implements OrderItemInterface 
    */
   public function removeAdjustment(Adjustment $adjustment) {
     $this->get('adjustments')->removeAdjustment($adjustment);
-    if ($this->getOrder()) {
-      $this->getOrder()->recalculateTotalPrice();
-    }
     return $this;
   }
 
@@ -309,29 +303,6 @@ class OrderItem extends CommerceContentEntityBase implements OrderItemInterface 
   /**
    * {@inheritdoc}
    */
-  public function isLocked() {
-    return (bool) $this->get('locked')->value;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function lock() {
-    $this->set('locked', TRUE);
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function unlock() {
-    $this->set('locked', FALSE);
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getCreatedTime() {
     return $this->get('created')->value;
   }
@@ -392,13 +363,6 @@ class OrderItem extends CommerceContentEntityBase implements OrderItemInterface 
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
-
-    /** @var \Drupal\commerce\PurchasableEntityTypeRepositoryInterface $purchasable_entity_type_repository */
-    $purchasable_entity_type_repository = \Drupal::service('commerce.purchasable_entity_type_repository');
-    $default_purchasable_entity_type = $purchasable_entity_type_repository->getDefaultPurchasableEntityType();
-    if ($default_purchasable_entity_type) {
-      $fields['purchased_entity']->setSetting('target_type', $default_purchasable_entity_type->id());
-    }
 
     $fields['title'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Title'))
@@ -466,14 +430,6 @@ class OrderItem extends CommerceContentEntityBase implements OrderItemInterface 
     $fields['data'] = BaseFieldDefinition::create('map')
       ->setLabel(t('Data'))
       ->setDescription(t('A serialized array of additional data.'));
-
-    $fields['locked'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Locked'))
-      ->setSettings([
-        'on_label' => t('Yes'),
-        'off_label' => t('No'),
-      ])
-      ->setDefaultValue(FALSE);
 
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Created'))

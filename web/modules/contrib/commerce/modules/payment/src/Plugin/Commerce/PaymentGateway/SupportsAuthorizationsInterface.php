@@ -11,18 +11,7 @@ use Drupal\commerce_price\Price;
 interface SupportsAuthorizationsInterface extends SupportsVoidsInterface {
 
   /**
-   * Checks whether the given payment can be captured.
-   *
-   * @param \Drupal\commerce_payment\Entity\PaymentInterface $payment
-   *   The payment to capture.
-   *
-   * @return bool
-   *   TRUE if the payment can be captured, FALSE otherwise.
-   */
-  public function canCapturePayment(PaymentInterface $payment);
-
-  /**
-   * Captures the given authorized payment.
+   * Captures the give authorized payment.
    *
    * Only payments in the 'authorization' state can be captured.
    *

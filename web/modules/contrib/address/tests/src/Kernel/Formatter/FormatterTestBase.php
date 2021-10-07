@@ -14,7 +14,7 @@ use Drupal\KernelTests\KernelTestBase;
 abstract class FormatterTestBase extends KernelTestBase {
 
   /**
-   * {@inheritdoc}
+   * @var array
    */
   public static $modules = [
     'system',
@@ -81,7 +81,14 @@ abstract class FormatterTestBase extends KernelTestBase {
     ]);
     $field->save();
 
-    $this->display = \Drupal::service('entity_display.repository')->getViewDisplay('entity_test', 'entity_test', 'default');
+    // @todo Technical debt. Thanks Core! Remove when 8.7.x is EOL.
+    // @see https://www.drupal.org/project/drupal/issues/3093130
+    if (is_callable(['\Drupal\Core\Entity\EntityDisplayRepository', 'getViewDisplay'])) {
+      $this->display = \Drupal::service('entity_display.repository')->getViewDisplay('entity_test', 'entity_test', 'default');
+    }
+    else {
+      $this->display = entity_get_display('entity_test', 'entity_test', 'default');
+    }
     $this->display->setComponent($this->fieldName, [
       'type' => $formatter_id,
       'settings' => [],

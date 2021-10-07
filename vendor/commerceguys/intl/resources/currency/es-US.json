@@ -12,7 +12,7 @@
 		"name": "bat"
 	},
 	"ETB": {
-		"name": "birr"
+		"name": "bir"
 	},
 	"VES": {
 		"name": "bolívar venezolano"
@@ -96,7 +96,7 @@
 		"name": "dírham marroquí"
 	},
 	"STN": {
-		"name": "dobra"
+		"name": "dobra santotomense"
 	},
 	"AUD": {
 		"name": "dólar australiano"
@@ -434,7 +434,7 @@
 		"name": "sol peruano"
 	},
 	"KGS": {
-		"name": "som"
+		"name": "som kirguís"
 	},
 	"TJS": {
 		"name": "somoni tayiko"

@@ -167,8 +167,8 @@ final class TeamAppAccessHandler extends EntityAccessControlHandler implements E
    * @param \Drupal\apigee_edge_teams\Entity\TeamInterface $team
    *   The team that owns the app.
    * @param string $operation
-   *   The entity operation on a team app: view, create, delete, update
-   *   analytics, add_api_key, delete_api_key or revoke_api_key.
+   *   The entity operation on a team app: view, create, delete, update or
+   *   analytics.
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The user for which to check access.
    *
@@ -176,16 +176,7 @@ final class TeamAppAccessHandler extends EntityAccessControlHandler implements E
    *   The access result.
    */
   private function checkAccessByTeamMemberPermissions(TeamInterface $team, string $operation, AccountInterface $account): AccessResultInterface {
-    $covered_operations = [
-      'view',
-      'create',
-      'delete',
-      'update',
-      'analytics',
-      'add_api_key',
-      'delete_api_key',
-      'revoke_api_key'
-    ];
+    $covered_operations = ['view', 'create', 'delete', 'update', 'analytics'];
     if (!in_array($operation, $covered_operations)) {
       return AccessResult::neutral("Team membership based access check does not support {$operation} operation on team apps.");
     }

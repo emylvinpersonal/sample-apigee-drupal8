@@ -2,14 +2,11 @@
 
 namespace Drupal\commerce;
 
-use Drupal\commerce\Event\CommerceEvents;
-use Drupal\commerce\Event\PostMailSendEvent;
 use Drupal\Core\Language\LanguageDefault;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Mail\MailManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslationManager;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class MailHandler implements MailHandlerInterface {
 
@@ -37,13 +34,6 @@ class MailHandler implements MailHandlerInterface {
   protected $mailManager;
 
   /**
-   * The event dispatcher.
-   *
-   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
-   */
-  protected $eventDispatcher;
-
-  /**
    * Constructs a new MailHandler object.
    *
    * @param \Drupal\Core\Language\LanguageDefault $language_default
@@ -52,14 +42,11 @@ class MailHandler implements MailHandlerInterface {
    *   The language manager.
    * @param \Drupal\Core\Mail\MailManagerInterface $mail_manager
    *   The mail manager.
-   * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $event_dispatcher
-   *   The event dispatcher.
    */
-  public function __construct(LanguageDefault $language_default, LanguageManagerInterface $language_manager, MailManagerInterface $mail_manager, EventDispatcherInterface $event_dispatcher) {
+  public function __construct(LanguageDefault $language_default, LanguageManagerInterface $language_manager, MailManagerInterface $mail_manager) {
     $this->languageDefault = $language_default;
     $this->languageManager = $language_manager;
     $this->mailManager = $mail_manager;
-    $this->eventDispatcher = $event_dispatcher;
   }
 
   /**
@@ -105,9 +92,6 @@ class MailHandler implements MailHandlerInterface {
     if ($params['langcode'] != $default_params['langcode']) {
       $this->changeActiveLanguage($default_params['langcode']);
     }
-    // Allow modules to react after an email has been sent.
-    $event = new PostMailSendEvent($params, $message);
-    $this->eventDispatcher->dispatch(CommerceEvents::POST_MAIL_SEND, $event);
 
     return (bool) $message['result'];
   }

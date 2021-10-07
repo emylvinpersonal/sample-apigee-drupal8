@@ -22,13 +22,9 @@ abstract class ClassDiscovery
      * @var array
      */
     private static $strategies = [
+        Strategy\PuliBetaStrategy::class,
         Strategy\CommonClassesStrategy::class,
         Strategy\CommonPsr17ClassesStrategy::class,
-        Strategy\PuliBetaStrategy::class,
-    ];
-
-    private static $deprecatedStrategies = [
-        Strategy\PuliBetaStrategy::class => true,
     ];
 
     /**
@@ -59,9 +55,7 @@ abstract class ClassDiscovery
             try {
                 $candidates = call_user_func($strategy.'::getCandidates', $type);
             } catch (StrategyUnavailableException $e) {
-                if (!isset(self::$deprecatedStrategies[$strategy])) {
-                    $exceptions[] = $e;
-                }
+                $exceptions[] = $e;
 
                 continue;
             }
@@ -128,16 +122,6 @@ abstract class ClassDiscovery
     {
         self::$strategies = $strategies;
         self::clearCache();
-    }
-
-    /**
-     * Returns the currently configured discovery strategies as fully qualified class names.
-     *
-     * @return string[]
-     */
-    public static function getStrategies(): iterable
-    {
-        return self::$strategies;
     }
 
     /**

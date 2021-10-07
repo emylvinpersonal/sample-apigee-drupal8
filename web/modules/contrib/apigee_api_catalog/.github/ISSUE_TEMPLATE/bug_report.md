@@ -6,28 +6,26 @@ labels: bug
 assignees: ''
 
 ---
-## Description
+**Describe the bug**
 A clear and concise description of what the bug is.
 
-## Steps to Reproduce
+**To Reproduce**
 Steps to reproduce the behavior:
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
+4. See error
 
-## Actual Behavior
-What happened after the steps to reproduce.
-
-## Expected Behavior
+**Expected behavior**
 A clear and concise description of what you expected to happen.
 
-## Screenshots
+**Screenshots**
 If applicable, add screenshots to help explain your problem.
 
-## Notes
+**Additional context**
 Add any other context about the problem here.
 
-## Version Info
+**Version Info**
 This can be the version you can see on admin/modules in Drupal or 
 the output of this command: `composer show`.  Add Drupal core and
 other version information if needed.

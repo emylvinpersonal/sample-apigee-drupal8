@@ -22,9 +22,8 @@ class AvailabilityManagerTest extends UnitTestCase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp(): void {
+  public function setUp() {
     parent::setUp();
-
     $this->availabilityManager = new AvailabilityManager();
   }
 
@@ -32,8 +31,6 @@ class AvailabilityManagerTest extends UnitTestCase {
    * ::covers addChecker
    * ::covers getCheckers
    * ::covers check.
-   *
-   * @group legacy
    */
   public function testCheck() {
     $mock_builder = $this->getMockBuilder('Drupal\commerce\AvailabilityCheckerInterface')

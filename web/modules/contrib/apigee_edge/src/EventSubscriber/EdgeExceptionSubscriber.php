@@ -20,18 +20,16 @@
 namespace Drupal\apigee_edge\EventSubscriber;
 
 use Apigee\Edge\Exception\ApiException;
-use Drupal\apigee_edge\Controller\ErrorPageController;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\DependencyInjection\ClassResolverInterface;
+use Drupal\Core\EventSubscriber\DefaultExceptionHtmlSubscriber;
 use Drupal\Core\Messenger\MessengerInterface;
-use Drupal\Core\Routing\RouteMatch;
-use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Routing\RedirectDestinationInterface;
 use Drupal\Core\Utility\Error;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\ExceptionEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Routing\Route;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 
 /**
  * Handles uncaught ApiExceptions.
@@ -39,14 +37,7 @@ use Symfony\Component\Routing\Route;
  * Redirects the user to the Edge error page if an uncaught
  * SDK-level ApiException event appears in the HttpKernel component.
  */
-final class EdgeExceptionSubscriber implements EventSubscriberInterface {
-
-  /**
-   * The logger instance.
-   *
-   * @var \Psr\Log\LoggerInterface
-   */
-  protected $logger;
+final class EdgeExceptionSubscriber extends DefaultExceptionHtmlSubscriber {
 
   /**
    * The messenger service.
@@ -63,49 +54,25 @@ final class EdgeExceptionSubscriber implements EventSubscriberInterface {
   protected $configFactory;
 
   /**
-   * Class Resolver service.
-   *
-   * @var \Drupal\Core\DependencyInjection\ClassResolverInterface
-   */
-  protected $classResolver;
-
-  /**
-   * The current route match.
-   *
-   * @var \Drupal\Core\Routing\RouteMatchInterface
-   */
-  protected $routeMatch;
-
-  /**
-   * The available main content renderer services, keyed per format.
-   *
-   * @var array
-   */
-  protected $mainContentRenderers;
-
-  /**
    * EdgeExceptionSubscriber constructor.
    *
+   * @param \Symfony\Component\HttpKernel\HttpKernelInterface $http_kernel
+   *   The HTTP kernel.
    * @param \Psr\Log\LoggerInterface $logger
    *   The logger service.
+   * @param \Drupal\Core\Routing\RedirectDestinationInterface $redirect_destination
+   *   The redirect destination service.
+   * @param \Symfony\Component\Routing\Matcher\UrlMatcherInterface $access_unaware_router
+   *   A router implementation which does not check access.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config factory service.
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
    *   The messenger service.
-   * @param \Drupal\Core\DependencyInjection\ClassResolverInterface $class_resolver
-   *   The class resolver service.
-   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
-   *   The current route match.
-   * @param array $main_content_renderers
-   *   The available main content renderer service IDs, keyed by format.
    */
-  public function __construct(LoggerInterface $logger, ConfigFactoryInterface $config_factory, MessengerInterface $messenger, ClassResolverInterface $class_resolver, RouteMatchInterface $route_match, array $main_content_renderers) {
-    $this->logger = $logger;
-    $this->configFactory = $config_factory;
+  public function __construct(HttpKernelInterface $http_kernel, LoggerInterface $logger, RedirectDestinationInterface $redirect_destination, UrlMatcherInterface $access_unaware_router, ConfigFactoryInterface $config_factory, MessengerInterface $messenger) {
+    parent::__construct($http_kernel, $logger, $redirect_destination, $access_unaware_router);
     $this->messenger = $messenger;
-    $this->classResolver = $class_resolver;
-    $this->routeMatch = $route_match;
-    $this->mainContentRenderers = $main_content_renderers;
+    $this->configFactory = $config_factory;
   }
 
   /**
@@ -118,43 +85,20 @@ final class EdgeExceptionSubscriber implements EventSubscriberInterface {
   /**
    * Displays the Edge connection error page.
    *
-   * @param \Symfony\Component\HttpKernel\Event\ExceptionEvent|\Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent $event
+   * @param \Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent $event
    *   The exception event.
    */
-  public function onException($event) {
-    $exception = ($event instanceof ExceptionEvent) ? $event->getThrowable() : $event->getException();
-    if ($exception instanceof ApiException || $exception->getPrevious() instanceof ApiException) {
-      $context = Error::decodeException($exception);
+  public function onException(GetResponseForExceptionEvent $event) {
+    if ($event->getException() instanceof ApiException || $event->getException()->getPrevious() instanceof ApiException) {
+      $context = Error::decodeException($event->getException());
       $this->logger->critical('@message %function (line %line of %file). <pre>@backtrace_string</pre>', $context);
-
-      $controller = $this->classResolver->getInstanceFromDefinition(ErrorPageController::class);
-      $content = [
-        '#title' => $controller->getPageTitle(),
-        'content' => $controller->render(),
-      ];
-
-      $routeMatch = new RouteMatch('apigee_edge.error_page', new Route('/api-communication-error'));
-      $renderer = $this->classResolver->getInstanceFromDefinition($this->mainContentRenderers['html']);
-
-      /* @var \Symfony\Component\HttpFoundation\Response $response */
-      $response = $renderer->renderResponse($content, $event->getRequest(), $routeMatch);
-      $response->setStatusCode(503);
+      $this->makeSubrequest($event, '/api-communication-error', Response::HTTP_SERVICE_UNAVAILABLE);
 
       // Display additional debug messages.
       if ($this->configFactory->get('apigee_edge.error_page')->get('error_page_debug_messages')) {
-        $this->messenger->addError($exception->getMessage());
+        $this->messenger->addError($event->getException()->getMessage());
       }
-
-      $event->setResponse($response);
     }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function getSubscribedEvents() {
-    $events[KernelEvents::EXCEPTION][] = ['onException', static::getPriority()];
-    return $events;
   }
 
 }

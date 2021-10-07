@@ -5,8 +5,8 @@ namespace Drupal\commerce_store\Entity;
 use CommerceGuys\Addressing\AddressFormat\AddressField;
 use CommerceGuys\Addressing\AddressFormat\FieldOverride;
 use Drupal\address\AddressInterface;
-use Drupal\commerce\EntityOwnerTrait;
 use Drupal\commerce_price\Entity\CurrencyInterface;
+use Drupal\user\UserInterface;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -82,8 +82,6 @@ use Drupal\Core\Field\BaseFieldDefinition;
  */
 class Store extends ContentEntityBase implements StoreInterface {
 
-  use EntityOwnerTrait;
-
   /**
    * {@inheritdoc}
    */
@@ -96,6 +94,36 @@ class Store extends ContentEntityBase implements StoreInterface {
    */
   public function setName($name) {
     $this->set('name', $name);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getOwner() {
+    return $this->get('uid')->entity;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setOwner(UserInterface $account) {
+    $this->set('uid', $account->id());
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getOwnerId() {
+    return $this->getEntityKey('owner');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setOwnerId($uid) {
+    $this->set('uid', $uid);
     return $this;
   }
 
@@ -219,10 +247,8 @@ class Store extends ContentEntityBase implements StoreInterface {
     foreach (array_keys($this->getTranslationLanguages()) as $langcode) {
       $translation = $this->getTranslation($langcode);
 
-      // Explicitly set the owner ID to 0 if the translation owner is anonymous
-      // (This will ensure we don't store a broken reference in case the user
-      // no longer exists).
-      if ($translation->getOwner()->isAnonymous()) {
+      // If no owner has been set explicitly, make the anonymous user the owner.
+      if (!$translation->getOwner()) {
         $translation->setOwnerId(0);
       }
     }
@@ -258,7 +284,6 @@ class Store extends ContentEntityBase implements StoreInterface {
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
-    $fields += static::ownerBaseFieldDefinitions($entity_type);
 
     $fields['type'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Type'))
@@ -266,9 +291,11 @@ class Store extends ContentEntityBase implements StoreInterface {
       ->setSetting('target_type', 'commerce_store_type')
       ->setReadOnly(TRUE);
 
-    $fields['uid']
+    $fields['uid'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Owner'))
       ->setDescription(t('The store owner.'))
+      ->setDefaultValueCallback('Drupal\commerce_store\Entity\Store::getCurrentUserId')
+      ->setSetting('target_type', 'user')
       ->setDisplayConfigurable('view', TRUE)
       ->setDisplayConfigurable('form', TRUE);
 
@@ -386,6 +413,18 @@ class Store extends ContentEntityBase implements StoreInterface {
       ->setDisplayConfigurable('form', TRUE);
 
     return $fields;
+  }
+
+  /**
+   * Default value callback for the 'uid' base field definition.
+   *
+   * @see ::baseFieldDefinitions()
+   *
+   * @return array
+   *   An array of default values.
+   */
+  public static function getCurrentUserId() {
+    return [\Drupal::currentUser()->id()];
   }
 
   /**

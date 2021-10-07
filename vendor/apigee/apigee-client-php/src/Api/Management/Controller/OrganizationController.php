@@ -52,7 +52,7 @@ class OrganizationController extends AbstractEntityController implements Organiz
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     protected function getBaseEndpointUri(): UriInterface
     {
@@ -60,7 +60,7 @@ class OrganizationController extends AbstractEntityController implements Organiz
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function getEntityClass(): string
     {

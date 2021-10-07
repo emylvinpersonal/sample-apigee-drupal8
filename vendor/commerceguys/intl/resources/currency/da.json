@@ -94,7 +94,7 @@
 	},
 	"XOF": {
 		"name": "CFA-franc BCEAO",
-		"symbol": "F CFA"
+		"symbol": "CFA"
 	},
 	"XPF": {
 		"name": "CFP-franc",
@@ -133,6 +133,9 @@
 	},
 	"STN": {
 		"name": "dobra fra Sao Tome og Principe"
+	},
+	"TTD": {
+		"name": "dollar fra Trinidad og Tobago"
 	},
 	"DOP": {
 		"name": "dominikansk peso"
@@ -441,9 +444,6 @@
 	},
 	"TOP": {
 		"name": "tongansk paʻanga"
-	},
-	"TTD": {
-		"name": "trinidadisk dollar"
 	},
 	"TND": {
 		"name": "tunesisk dinar"

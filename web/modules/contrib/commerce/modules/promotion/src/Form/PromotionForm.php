@@ -23,7 +23,7 @@ class PromotionForm extends ContentEntityForm {
     if ($store_query->count()->execute() == 0) {
       $link = Link::createFromRoute('Add a new store.', 'entity.commerce_store.add_page');
       $form['warning'] = [
-        '#markup' => $this->t("Promotions can't be created until a store has been added. @link", ['@link' => $link->toString()]),
+        '#markup' => t("Promotions can't be created until a store has been added. @link", ['@link' => $link->toString()]),
       ];
       return $form;
     }
@@ -40,13 +40,11 @@ class PromotionForm extends ContentEntityForm {
     $form['#tree'] = TRUE;
     // By default an offer is preselected on the add form because the field
     // is required. Select an empty value instead, to force the user to choose.
-    $user_input = $form_state->getUserInput();
-    if ($this->operation == 'add' &&
-      $this->entity->get('offer')->isEmpty()) {
+    if ($this->operation == 'add' && $this->entity->get('offer')->isEmpty()) {
       if (!empty($form['offer']['widget'][0]['target_plugin_id'])) {
         $form['offer']['widget'][0]['target_plugin_id']['#empty_value'] = '';
-        if (empty($user_input['offer'][0]['target_plugin_id'])) {
-          $form['offer']['widget'][0]['target_plugin_id']['#default_value'] = '';
+        $form['offer']['widget'][0]['target_plugin_id']['#default_value'] = '';
+        if (!$form_state->isRebuilding()) {
           unset($form['offer']['widget'][0]['target_plugin_configuration']);
         }
       }
@@ -101,7 +99,6 @@ class PromotionForm extends ContentEntityForm {
       'start_date' => 'date_details',
       'end_date' => 'date_details',
       'usage_limit' => 'usage_details',
-      'usage_limit_customer' => 'usage_details',
       'compatibility' => 'compatibility_details',
     ];
     foreach ($field_details_mapping as $field => $group) {

@@ -44,7 +44,7 @@ class LegalEntityNormalizer extends EntityNormalizer
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      *
      * @psalm-suppress InvalidReturnType Returning an object here is required
      * for creating a valid Apigee Edge request.
@@ -64,7 +64,7 @@ class LegalEntityNormalizer extends EntityNormalizer
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function supportsNormalization($data, $format = null)
     {

@@ -13,7 +13,7 @@ class NorwegianVatTest extends EuropeanUnionVatTest {
   /**
    * {@inheritdoc}
    */
-  protected function setUp(): void {
+  protected function setUp() {
     parent::setUp();
 
     $this->taxType = TaxType::create([
@@ -50,16 +50,6 @@ class NorwegianVatTest extends EuropeanUnionVatTest {
     $plugin->apply($order);
     $adjustments = $order->collectAdjustments();
     $this->assertCount(0, $adjustments);
-  }
-
-  /**
-   * @covers ::getZones
-   */
-  public function testGetZones() {
-    /** @var \Drupal\commerce_tax\Plugin\Commerce\TaxType\LocalTaxTypeInterface $plugin */
-    $plugin = $this->taxType->getPlugin();
-    $zones = $plugin->getZones();
-    $this->assertArrayHasKey('no', $zones);
   }
 
 }

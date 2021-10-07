@@ -13,11 +13,12 @@ class ConditionTest extends UnitTestCase {
 
   /**
    * ::covers __construct.
+   *
+   * @expectedException \InvalidArgumentException
+   * @expectedExceptionMessage Unrecognized operator "INVALID".
    */
   public function testInvalidOperator() {
-    $this->expectException(\InvalidArgumentException::class);
-    $this->expectExceptionMessage('Unrecognized operator "INVALID".');
-    new Condition('uid', '1', 'INVALID');
+    $condition = new Condition('uid', '1', 'INVALID');
   }
 
   /**

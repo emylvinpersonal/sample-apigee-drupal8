@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 class CompanyRatePlanNameConverter extends RatePlanNameConverter implements NameConverterInterface
 {
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     protected function getExternalToLocalMapping(): array
     {

@@ -152,10 +152,7 @@ class SingleVariationWidget extends WidgetBase implements ContainerFactoryPlugin
       return;
     }
 
-    $parents = [$this->fieldDefinition->getName(), 'widget'];
-    if ($form['#type'] != 'inline_entity_form') {
-      $parents = array_merge($form['#parents'], $parents);
-    }
+    $parents = array_merge($form['#parents'], [$this->fieldDefinition->getName(), 'widget']);
     $element = NestedArray::getValue($form, $parents);
     /** @var \Drupal\commerce\Plugin\Commerce\InlineForm\EntityInlineFormInterface $inline_form */
     $inline_form = $element['entity']['#inline_form'];

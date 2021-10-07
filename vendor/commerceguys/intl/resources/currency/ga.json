@@ -179,7 +179,7 @@
 	},
 	"XOF": {
 		"name": "Franc CFA Iarthar na hAfraice",
-		"symbol": "F CFA"
+		"symbol": "CFA"
 	},
 	"XAF": {
 		"name": "Franc CFA na hAfraice Láir",
@@ -323,8 +323,7 @@
 		"name": "Peso na hAirgintíne"
 	},
 	"PHP": {
-		"name": "Peso na nOileán Filipíneach",
-		"symbol": "₱"
+		"name": "Peso na nOileán Filipíneach"
 	},
 	"DOP": {
 		"name": "Peso na Poblachta Doiminicí"

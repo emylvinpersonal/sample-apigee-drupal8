@@ -41,7 +41,7 @@ class OrderAssignment implements OrderAssignmentInterface {
   /**
    * {@inheritdoc}
    */
-  public function assign(OrderInterface $order, UserInterface $customer, $save_order = TRUE) {
+  public function assign(OrderInterface $order, UserInterface $customer) {
     // Notify other modules before the order is modified, so that
     // subscribers have access to the original data.
     $event = new OrderAssignEvent($order, $customer);
@@ -49,10 +49,7 @@ class OrderAssignment implements OrderAssignmentInterface {
 
     $order->setCustomer($customer);
     $order->setEmail($customer->getEmail());
-
-    if ($save_order) {
-      $order->save();
-    }
+    $order->save();
   }
 
   /**

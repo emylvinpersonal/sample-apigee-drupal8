@@ -48,7 +48,7 @@ class RatePlanNormalizerFactory implements NormalizerInterface, SerializerAwareI
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      *
      * @psalm-suppress InvalidNullableReturnType - There are going to be at
      * least one normalizer always that can normalize data here.
@@ -65,7 +65,7 @@ class RatePlanNormalizerFactory implements NormalizerInterface, SerializerAwareI
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function supportsNormalization($data, $format = null)
     {
@@ -79,7 +79,7 @@ class RatePlanNormalizerFactory implements NormalizerInterface, SerializerAwareI
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function setSerializer(SerializerInterface $serializer): void
     {

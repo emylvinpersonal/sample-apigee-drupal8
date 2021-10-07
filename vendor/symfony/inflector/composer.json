@@ -1,7 +1,7 @@
 {
     "name": "symfony/inflector",
     "type": "library",
-    "description": "Converts words between their singular and plural forms (English only)",
+    "description": "Symfony Inflector Component",
     "keywords": [
         "string",
         "inflection",
@@ -24,8 +24,7 @@
     ],
     "require": {
         "php": ">=7.1.3",
-        "symfony/polyfill-ctype": "~1.8",
-        "symfony/polyfill-php80": "^1.16"
+        "symfony/polyfill-ctype": "~1.8"
     },
     "autoload": {
         "psr-4": { "Symfony\\Component\\Inflector\\": "" },
@@ -33,5 +32,10 @@
             "/Tests/"
         ]
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "4.4-dev"
+        }
+    }
 }

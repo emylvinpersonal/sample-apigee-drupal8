@@ -3,6 +3,7 @@
 namespace Drupal\key\Plugin\KeyType;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Component\Utility\Crypt;
 use Drupal\key\Plugin\KeyTypeBase;
 use Drupal\key\Plugin\KeyPluginFormInterface;
 
@@ -106,7 +107,7 @@ class EncryptionKeyType extends KeyTypeBase implements KeyPluginFormInterface {
       // If no key size has been defined, use 32 bytes as the default.
       $bytes = 32;
     }
-    $random_key = random_bytes($bytes);
+    $random_key = Crypt::randomBytes($bytes);
 
     return $random_key;
   }

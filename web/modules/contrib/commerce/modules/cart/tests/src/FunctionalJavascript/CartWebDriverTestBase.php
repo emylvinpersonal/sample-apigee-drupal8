@@ -53,7 +53,7 @@ abstract class CartWebDriverTestBase extends OrderWebDriverTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp(): void {
+  protected function setUp() {
     parent::setUp();
 
     $this->cart = $this->container->get('commerce_cart.cart_provider')->createCart('default');

@@ -2,7 +2,6 @@
 
 namespace Drupal\commerce_payment\Plugin\Commerce\PaymentGateway;
 
-use Drupal\commerce_payment\Entity\PaymentInterface;
 use Drupal\commerce_payment\Entity\PaymentMethodInterface;
 
 /**
@@ -11,20 +10,17 @@ use Drupal\commerce_payment\Entity\PaymentMethodInterface;
 interface SupportsStoredPaymentMethodsInterface {
 
   /**
-   * Creates a payment.
+   * Creates a payment method with the given payment details.
    *
-   * @param \Drupal\commerce_payment\Entity\PaymentInterface $payment
-   *   The payment.
-   * @param bool $capture
-   *   Whether the created payment should be captured (VS authorized only).
-   *   Allowed to be FALSE only if the plugin supports authorizations.
+   * @param \Drupal\commerce_payment\Entity\PaymentMethodInterface $payment_method
+   *   The payment method.
+   * @param array $payment_details
+   *   The gateway-specific payment details.
    *
-   * @throws \InvalidArgumentException
-   *   If $capture is FALSE but the plugin does not support authorizations.
    * @throws \Drupal\commerce_payment\Exception\PaymentGatewayException
    *   Thrown when the transaction fails for any reason.
    */
-  public function createPayment(PaymentInterface $payment, $capture = TRUE);
+  public function createPaymentMethod(PaymentMethodInterface $payment_method, array $payment_details);
 
   /**
    * Deletes the given payment method.

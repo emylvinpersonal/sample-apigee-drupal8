@@ -38,13 +38,7 @@ class ApigeeDevportalKickstartMonetization {
       $sdk_connector = \Drupal::service('apigee_edge.sdk_connector');
       $organization_controller = new OrganizationController($sdk_connector->getClient());
       $organization = $organization_controller->load($sdk_connector->getOrganization());
-      // Check if org is Hybrid or ApigeeX.
-      if ($organization && ('CLOUD' === $organization->getRuntimeType() || 'HYBRID' === $organization->getRuntimeType()) && $organization->getAddonsConfig()) {
-        return (TRUE === $organization->getAddonsConfig()->getMonetizationConfig()->getEnabled());
-      }
-      else {
-        return ($organization->getPropertyValue('features.isMonetizationEnabled') === 'true');
-      }
+      return ($organization->getPropertyValue('features.isMonetizationEnabled') === 'true');
     }
     catch (\Exception $exception) {
       // Do not log the exception here. This litters the logs since this is run

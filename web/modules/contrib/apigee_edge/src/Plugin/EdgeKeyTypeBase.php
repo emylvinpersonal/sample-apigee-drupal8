@@ -51,13 +51,9 @@ abstract class EdgeKeyTypeBase extends KeyTypeBase implements EdgeKeyTypeInterfa
    */
   public function getAuthenticationType(KeyInterface $key): string {
     if ($this->getInstanceType($key) === EdgeKeyTypeInterface::INSTANCE_TYPE_HYBRID) {
-      if ($this->useGcpDefaultServiceAccount($key)) {
-        return EdgeKeyTypeInterface::EDGE_AUTH_TYPE_DEFAULT_GCE_SERVICE_ACCOUNT;
-      }
-      else {
-        return EdgeKeyTypeInterface::EDGE_AUTH_TYPE_JWT;
-      }
+      return EdgeKeyTypeInterface::EDGE_AUTH_TYPE_JWT;
     }
+
     if (!isset($key->getKeyValues()['auth_type'])) {
       throw new AuthenticationKeyValueMalformedException('auth_type');
     }
@@ -69,10 +65,10 @@ abstract class EdgeKeyTypeBase extends KeyTypeBase implements EdgeKeyTypeInterfa
    */
   public function getEndpoint(KeyInterface $key): string {
     if ($this->getInstanceType($key) === EdgeKeyTypeInterface::INSTANCE_TYPE_HYBRID) {
-      return ClientInterface::APIGEE_ON_GCP_ENDPOINT;
+      return ClientInterface::HYBRID_ENDPOINT;
     }
     elseif ($this->getInstanceType($key) === EdgeKeyTypeInterface::INSTANCE_TYPE_PUBLIC) {
-      return Client::EDGE_ENDPOINT;
+      return Client::DEFAULT_ENDPOINT;
     }
     return $key->getKeyValues()['endpoint'];
   }
@@ -82,11 +78,9 @@ abstract class EdgeKeyTypeBase extends KeyTypeBase implements EdgeKeyTypeInterfa
    */
   public function getEndpointType(KeyInterface $key): string {
     if ($this->getInstanceType($key) === EdgeKeyTypeInterface::INSTANCE_TYPE_PUBLIC) {
-      /* @phpstan-ignore-next-line */
       return EdgeKeyTypeInterface::EDGE_ENDPOINT_TYPE_DEFAULT;
     }
 
-    /* @phpstan-ignore-next-line */
     return EdgeKeyTypeInterface::EDGE_ENDPOINT_TYPE_CUSTOM;
   }
 
@@ -100,7 +94,7 @@ abstract class EdgeKeyTypeBase extends KeyTypeBase implements EdgeKeyTypeInterfa
     }
 
     // Backwards compatibility, before Hybrid support.
-    if (empty($key_values['endpoint']) || $key_values['endpoint'] === ClientInterface::EDGE_ENDPOINT) {
+    if (empty($key_values['endpoint']) || $key_values['endpoint'] === ClientInterface::DEFAULT_ENDPOINT) {
       return EdgeKeyTypeInterface::INSTANCE_TYPE_PUBLIC;
     }
 
@@ -168,13 +162,6 @@ abstract class EdgeKeyTypeBase extends KeyTypeBase implements EdgeKeyTypeInterfa
       throw new AuthenticationKeyValueMalformedException('account_json_key');
     }
     return $json;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function useGcpDefaultServiceAccount(KeyInterface $key): bool {
-    return !empty($key->getKeyValues()['gcp_hosted']);
   }
 
 }

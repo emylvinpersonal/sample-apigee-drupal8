@@ -2,9 +2,8 @@
 
 namespace Drupal\commerce_product\ContextProvider;
 
-use Drupal\commerce_product\Entity\ProductTypeInterface;
+use Drupal\commerce_product\Entity\Product;
 use Drupal\Core\Cache\CacheableMetadata;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\Context\Context;
 use Drupal\Core\Plugin\Context\EntityContextDefinition;
 use Drupal\Core\Plugin\Context\ContextProviderInterface;
@@ -28,23 +27,13 @@ class ProductRouteContext implements ContextProviderInterface {
   protected $routeMatch;
 
   /**
-   * The entity type manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
-
-  /**
    * Constructs a new ProductRouteContext object.
    *
    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
    *   The route match.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager.
    */
-  public function __construct(RouteMatchInterface $route_match, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(RouteMatchInterface $route_match) {
     $this->routeMatch = $route_match;
-    $this->entityTypeManager = $entity_type_manager;
   }
 
   /**
@@ -56,10 +45,9 @@ class ProductRouteContext implements ContextProviderInterface {
     if ($product = $this->routeMatch->getParameter('commerce_product')) {
       $value = $product;
     }
-    elseif ($product_type = $this->routeMatch->getParameter('commerce_product_type')) {
-      $product_storage = $this->entityTypeManager->getStorage('commerce_product');
-      $product_type_id = $product_type instanceof ProductTypeInterface ? $product_type->id() : $product_type;
-      $value = $product_storage->createWithSampleValues($product_type_id);
+    elseif ($this->routeMatch->getRouteName() == 'entity.commerce_product.add_form') {
+      $product_type = $this->routeMatch->getParameter('commerce_product_type');
+      $value = Product::create(['type' => $product_type->id()]);
     }
 
     $cacheability = new CacheableMetadata();

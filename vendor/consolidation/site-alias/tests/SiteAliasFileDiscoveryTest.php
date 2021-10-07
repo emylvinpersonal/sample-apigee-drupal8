@@ -8,7 +8,7 @@ class SiteAliasFileDiscoveryTest extends TestCase
     use FixtureFactory;
     use FunctionUtils;
 
-    function setUp(): void
+    function setUp()
     {
         $this->sut = new SiteAliasFileDiscovery();
     }

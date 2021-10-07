@@ -177,7 +177,7 @@
 	},
 	"XOF": {
 		"name": "Ffranc CFA Gorllewin Affrica",
-		"symbol": "F CFA"
+		"symbol": "CFA"
 	},
 	"XPF": {
 		"name": "Ffranc CFP",
@@ -307,7 +307,7 @@
 		"name": "Paʻanga Tonga"
 	},
 	"MOP": {
-		"name": "pataca Macau"
+		"name": "Pataca Macau"
 	},
 	"CUP": {
 		"name": "Peso Ciwba"

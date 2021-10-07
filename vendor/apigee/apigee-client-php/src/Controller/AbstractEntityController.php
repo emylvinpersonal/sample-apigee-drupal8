@@ -54,7 +54,7 @@ abstract class AbstractEntityController extends AbstractController
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function getEntityEndpointUri(string $entityId): UriInterface
     {
@@ -64,17 +64,7 @@ abstract class AbstractEntityController extends AbstractController
     }
 
     /**
-     * {@inheritdoc}
-     */
-    protected function getEntityCancelEndpointUri(string $entityId): UriInterface
-    {
-        $encoded = $entityId;
-
-        return $this->getBaseEndpointUri()->withPath("{$this->getBaseEndpointUri()}/{$encoded}:expire");
-    }
-
-    /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     protected function getEntitySerializer(): EntitySerializerInterface
     {

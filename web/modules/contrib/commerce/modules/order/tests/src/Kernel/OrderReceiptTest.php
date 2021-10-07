@@ -64,7 +64,7 @@ class OrderReceiptTest extends OrderKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp(): void {
+  protected function setUp() {
     parent::setUp();
 
     $this->installConfig(['language']);
@@ -240,11 +240,11 @@ class OrderReceiptTest extends OrderKernelTestBase {
     $this->assertEquals('bcc@example.com', $email['headers']['Bcc']);
     $this->assertEquals($expected_langcode, $email['langcode']);
 
-    $this->assertStringContainsString((string) $subject, $email['subject']);
-    $this->assertStringContainsString($strings['Thank you for your order!'], $email['body']);
-    $this->assertStringContainsString($strings['Default store'], $email['body']);
-    $this->assertStringContainsString($strings['Cash on delivery'], $email['body']);
-    $this->assertStringContainsString('Order Total: ' . $expected_order_total, $email['body']);
+    $this->assertEquals((string) $subject, $email['subject']);
+    $this->assertContains($strings['Thank you for your order!'], $email['body']);
+    $this->assertContains($strings['Default store'], $email['body']);
+    $this->assertContains($strings['Cash on delivery'], $email['body']);
+    $this->assertContains('Order Total: ' . $expected_order_total, $email['body']);
   }
 
   /**

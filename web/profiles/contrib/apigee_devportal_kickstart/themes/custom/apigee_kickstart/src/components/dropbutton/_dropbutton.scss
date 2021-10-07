@@ -175,18 +175,3 @@ li.dropbutton-toggle {
     transform: rotate(-180deg);
   }
 }
-
-// Dropbutton Single
-// -----------------------------------------------------------------------------
-
-td .dropbutton-single {
-  .dropbutton-widget {
-    position: static;
-  }
-
-  .dropbutton-action {
-    a {
-      border-radius: 4px;
-    }
-  }
-}

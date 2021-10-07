@@ -30,7 +30,7 @@ class DeveloperReportDefinitionDenormalizer extends ReportDefinitionDenormalizer
     protected $developerReportDefinitionClass = DeveloperReportDefinition::class;
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function denormalize($data, $class, $format = null, array $context = [])
     {
@@ -38,7 +38,7 @@ class DeveloperReportDefinitionDenormalizer extends ReportDefinitionDenormalizer
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function supportsDenormalization($data, $type, $format = null)
     {

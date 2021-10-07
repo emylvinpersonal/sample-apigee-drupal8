@@ -9,7 +9,6 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\Core\Plugin\Discovery\ContainerDerivativeDiscoveryDecorator;
 use Drupal\Core\Plugin\Discovery\YamlDiscovery;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
  * Manages discovery and instantiation of commerce_adjustment_type plugins.
@@ -18,8 +17,6 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
  * @see plugin_api
  */
 class AdjustmentTypeManager extends DefaultPluginManager {
-
-  use StringTranslationTrait;
 
   /**
    * Default values for each plugin.
@@ -77,11 +74,11 @@ class AdjustmentTypeManager extends DefaultPluginManager {
     // Provide fallback labels for contrib adjustment types defined before 2.4.
     if (empty($definition['singular_label'])) {
       $label = mb_strtolower($definition['label']);
-      $definition['singular_label'] = $this->t('@label adjustment', ['@label' => $label]);
+      $definition['singular_label'] = t('@label adjustment', ['@label' => $label]);
     }
     if (empty($definition['plural_label'])) {
       $label = mb_strtolower($definition['label']);
-      $definition['plural_label'] = $this->t('@label adjustments', ['@label' => $label]);
+      $definition['plural_label'] = t('@label adjustments', ['@label' => $label]);
     }
   }
 

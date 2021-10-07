@@ -3,7 +3,6 @@
 namespace Drupal\commerce_promotion\Plugin\Commerce\PromotionOffer;
 
 use Drupal\commerce_price\RounderInterface;
-use Drupal\commerce_promotion\Entity\PromotionInterface;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -108,11 +107,6 @@ abstract class PromotionOfferBase extends PluginBase implements PromotionOfferIn
   public function getEntityTypeId() {
     return $this->pluginDefinition['entity_type'];
   }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function clear(EntityInterface $entity, PromotionInterface $promotion) {}
 
   /**
    * Asserts that the given entity is of the expected type.

@@ -42,7 +42,7 @@ class ProductAdminTest extends ProductBrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp(): void {
+  protected function setUp() {
     parent::setUp();
 
     FieldStorageConfig::create([

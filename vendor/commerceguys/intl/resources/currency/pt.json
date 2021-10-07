@@ -187,7 +187,7 @@
 	},
 	"XOF": {
 		"name": "Franco CFA de BCEAO",
-		"symbol": "F CFA"
+		"symbol": "CFA"
 	},
 	"XAF": {
 		"name": "Franco CFA de BEAC",
@@ -343,7 +343,7 @@
 		"name": "Paʻanga tonganesa"
 	},
 	"MOP": {
-		"name": "Pataca macaense"
+		"name": "Pataca de Macau"
 	},
 	"ARS": {
 		"name": "Peso argentino"
@@ -380,7 +380,7 @@
 		"name": "Quetzal guatemalteco"
 	},
 	"MMK": {
-		"name": "Quiate mianmarense"
+		"name": "Quiat de Myanmar"
 	},
 	"ZAR": {
 		"name": "Rand sul-africano"
@@ -417,7 +417,7 @@
 		"name": "Rublo russo"
 	},
 	"LKR": {
-		"name": "Rupia cingalesa"
+		"name": "Rupia do Sri Lanka"
 	},
 	"INR": {
 		"name": "Rupia indiana",

@@ -42,7 +42,7 @@ class CompanyRatePlanNormalizer extends LegalEntityRatePlanNormalizer
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function supportsNormalization($data, $format = null)
     {

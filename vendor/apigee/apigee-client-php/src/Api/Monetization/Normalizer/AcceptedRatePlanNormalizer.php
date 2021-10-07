@@ -26,7 +26,7 @@ class AcceptedRatePlanNormalizer extends EntityNormalizer
     use TimezoneFixerHelperTrait;
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      *
      * @psalm-suppress InvalidReturnType Returning an object here is required
      * for creating a valid Apigee Edge request.
@@ -42,7 +42,7 @@ class AcceptedRatePlanNormalizer extends EntityNormalizer
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function supportsNormalization($data, $format = null)
     {

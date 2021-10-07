@@ -8,7 +8,7 @@
 	},
 	"XOF": {
 		"name": "Afrika mendebaldeko CFA frankoa",
-		"symbol": "F CFA"
+		"symbol": "CFA"
 	},
 	"AED": {
 		"name": "Arabiar Emirerri Batuetako dirhama"
@@ -40,7 +40,7 @@
 		"symbol": "CFPF"
 	},
 	"NIO": {
-		"name": "cordoba nikaraguarra"
+		"name": "córdoba nikaraguarra"
 	},
 	"CRC": {
 		"name": "Costa Ricako colona"
@@ -114,9 +114,6 @@
 		"name": "dolar hongkongtarra",
 		"symbol": "HK$"
 	},
-	"JMD": {
-		"name": "dolar jamaikarra"
-	},
 	"KYD": {
 		"name": "dolar kaimandarra"
 	},
@@ -170,6 +167,9 @@
 	},
 	"IDR": {
 		"name": "errupia indonesiarra"
+	},
+	"MVR": {
+		"name": "errupia maldivarra"
 	},
 	"MUR": {
 		"name": "errupia mauriziarra"
@@ -229,8 +229,8 @@
 	"ANG": {
 		"name": "Holandarren Antilletako florina"
 	},
-	"UAH": {
-		"name": "hryvnia ukrainarra"
+	"JMD": {
+		"name": "Jamaikako dolarra"
 	},
 	"XCD": {
 		"name": "Karibe ekialdeko dolarra",
@@ -351,9 +351,6 @@
 	"BTN": {
 		"name": "ngultrum bhutandarra"
 	},
-	"TOP": {
-		"name": "paʻanga tongatarra"
-	},
 	"MOP": {
 		"name": "pataca macauarra"
 	},
@@ -412,9 +409,6 @@
 	"SAR": {
 		"name": "riyal saudiarabiarra"
 	},
-	"MVR": {
-		"name": "rufiyaa maldivarra"
-	},
 	"SVC": {
 		"name": "Salvadoran Colón"
 	},
@@ -446,6 +440,9 @@
 	"KZT": {
 		"name": "tenge kazakhstandarra"
 	},
+	"TOP": {
+		"name": "Tongako Paʻanga"
+	},
 	"TTD": {
 		"name": "Trinidad eta Tobagoko dolarra"
 	},
@@ -466,6 +463,9 @@
 	},
 	"MRU": {
 		"name": "uguiya mauritaniarra"
+	},
+	"UAH": {
+		"name": "Ukrainako hryvnia"
 	},
 	"UYW": {
 		"name": "Uruguayan Nominal Wage Index Unit"

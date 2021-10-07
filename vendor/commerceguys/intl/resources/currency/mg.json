@@ -162,7 +162,7 @@
 	},
 	"XOF": {
 		"name": "Farantsa CFA (BCEAO)",
-		"symbol": "F CFA"
+		"symbol": "CFA"
 	},
 	"XAF": {
 		"name": "Farantsa CFA (BEAC)",
@@ -358,8 +358,7 @@
 		"name": "Peruvian Sol"
 	},
 	"PHP": {
-		"name": "Philippine Piso",
-		"symbol": "₱"
+		"name": "Philippine Piso"
 	},
 	"BWP": {
 		"name": "Pola botsoaney"

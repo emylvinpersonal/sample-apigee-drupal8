@@ -29,8 +29,6 @@ use Http\Client\Exception;
  * HybridOauth2 authentication plugin for authenticating to Hybrid Cloud API.
  *
  * @see https://developers.google.com/identity/protocols/OAuth2ServiceAccount
- * @deprecated in 2.0.9, will be removed in 3.0.0.
- * https://github.com/apigee/apigee-client-php/issues/112
  */
 class HybridOauth2 extends AbstractOauth
 {
@@ -91,7 +89,7 @@ class HybridOauth2 extends AbstractOauth
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function authClient(): ClientInterface
     {
@@ -99,7 +97,7 @@ class HybridOauth2 extends AbstractOauth
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      *
      * @psalm-suppress InvalidCatch - Exception by interface can be caught in PHP >= 7.1.
      */

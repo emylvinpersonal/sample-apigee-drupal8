@@ -42,7 +42,7 @@ class BalanceNormalizer extends EntityNormalizer
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function supportsNormalization($data, $format = null)
     {

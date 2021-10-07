@@ -186,9 +186,6 @@ class PurchasedPlan extends FieldableEdgeEntityBase implements PurchasedPlanInte
     $definitions['termsAndConditions']
       ->setRequired(TRUE);
 
-    // Set the target_type for ratePlan base field.
-    $definitions['ratePlan']->setSetting('target_type', 'rate_plan');
-
     return $definitions;
   }
 

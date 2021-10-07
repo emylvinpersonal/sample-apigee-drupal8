@@ -220,8 +220,7 @@
 		"name": "Papua New Guinean Kina"
 	},
 	"PHP": {
-		"name": "Philippine Piso",
-		"symbol": "₱"
+		"name": "Philippine Piso"
 	},
 	"PLN": {
 		"name": "Polish Zloty"
@@ -339,7 +338,7 @@
 	},
 	"XOF": {
 		"name": "West African CFA Franc",
-		"symbol": "F CFA"
+		"symbol": "CFA"
 	},
 	"YER": {
 		"name": "Yemeni Rial"

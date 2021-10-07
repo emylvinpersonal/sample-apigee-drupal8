@@ -56,7 +56,7 @@ class OrderForm extends ContentEntityForm {
    * {@inheritdoc}
    */
   public function form(array $form, FormStateInterface $form_state) {
-    /** @var \Drupal\commerce_order\Entity\OrderInterface $order */
+    /* @var \Drupal\commerce_order\Entity\Order $order */
     $order = $this->entity;
     $form = parent::form($form, $form_state);
 
@@ -67,11 +67,6 @@ class OrderForm extends ContentEntityForm {
     $form['changed'] = [
       '#type' => 'hidden',
       '#default_value' => $order->getChangedTime(),
-    ];
-    // Version must be sent to the client, for later overwrite error checking.
-    $form['version'] = [
-      '#type' => 'hidden',
-      '#default_value' => $order->getVersion(),
     ];
 
     $last_saved = $this->dateFormatter->format($order->getChangedTime(), 'short');
@@ -100,7 +95,7 @@ class OrderForm extends ContentEntityForm {
     ];
     $form['customer'] = [
       '#type' => 'details',
-      '#title' => $this->t('Customer information'),
+      '#title' => t('Customer information'),
       '#group' => 'advanced',
       '#open' => TRUE,
       '#attributes' => [

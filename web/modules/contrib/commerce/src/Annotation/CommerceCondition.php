@@ -3,7 +3,6 @@
 namespace Drupal\commerce\Annotation;
 
 use Drupal\Component\Annotation\Plugin;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
  * Defines the condition plugin annotation object.
@@ -13,8 +12,6 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
  * @Annotation
  */
 class CommerceCondition extends Plugin {
-
-  use StringTranslationTrait;
 
   /**
    * The plugin ID.
@@ -95,7 +92,7 @@ class CommerceCondition extends Plugin {
       $values['display_label'] = $values['label'];
     }
     if (empty($values['category'])) {
-      $values['category'] = $this->t('Other');
+      $values['category'] = t('Other');
     }
     parent::__construct($values);
   }

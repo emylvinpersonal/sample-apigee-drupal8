@@ -36,14 +36,12 @@ class ProductVariationAccessControlHandler extends CoreEntityAccessControlHandle
       return AccessResult::forbidden()->addCacheableDependency($entity);
     }
 
-    if ($operation === 'view') {
+    if ($operation == 'view') {
       $result = $product->access('view', $account, TRUE);
-      assert($result instanceof AccessResult);
-      $result->addCacheableDependency($entity);
     }
     else {
       $bundle = $entity->bundle();
-      $result = AccessResult::allowedIfHasPermission($account, "manage $bundle commerce_product_variation")->cachePerPermissions();
+      $result = AccessResult::allowedIfHasPermission($account, "manage $bundle commerce_product_variation");
     }
 
     return $result;

@@ -14,12 +14,12 @@ class ElementWebTest extends InlineEntityFormTestBase {
    *
    * @var array
    */
-  protected static $modules = ['inline_entity_form_test'];
+  public static $modules = ['inline_entity_form_test'];
 
   /**
    * {@inheritdoc}
    */
-  protected function setUp(): void {
+  protected function setUp() {
     parent::setUp();
 
     $this->user = $this->createUser([

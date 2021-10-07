@@ -53,7 +53,7 @@ class ReportCriteriaNormalizer extends ObjectNormalizer
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      *
      * @psalm-suppress InvalidReturnType Returning an object here is required
      * for creating a valid Apigee Edge request.
@@ -87,7 +87,7 @@ class ReportCriteriaNormalizer extends ObjectNormalizer
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function supportsNormalization($data, $format = null)
     {

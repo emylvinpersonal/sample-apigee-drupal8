@@ -2,7 +2,6 @@
   Themes a single-select exposed form element as radio buttons.
 
   Available variables:
-    - wrapper_attributes: attributes for the wrapper element.
     - element: The collection of checkboxes.
     - children: An array of keys for the children of element.
     - is_nested: TRUE if this is to be rendered as a nested list.
@@ -13,15 +12,14 @@
 {%
   set classes = [
     'form-radios',
-    is_nested ? 'bef-nested',
-    display_inline ? 'form--inline'
+    isNested ? 'bef_nested'
   ]
 %}
-<div{{ wrapper_attributes.addClass(classes) }}>
+<div{{ attributes.addClass(classes) }}>
   {% set current_nesting_level = 0 %}
   {% for child in children %}
     {% set item = attribute(element, child) %}
-    {% if is_nested %}
+    {% if isNested %}
       {% set new_nesting_level = attribute(depth, child) %}
       {% include '@better_exposed_filters/bef-nested-elements.html.twig' %}
       {% set current_nesting_level = new_nesting_level %}

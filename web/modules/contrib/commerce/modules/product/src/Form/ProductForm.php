@@ -65,7 +65,7 @@ class ProductForm extends ContentEntityForm {
     if ($store_query->count()->execute() == 0) {
       $link = Link::createFromRoute('Add a new store.', 'entity.commerce_store.add_page');
       $form['warning'] = [
-        '#markup' => $this->t("Products can't be created until a store has been added. @link", ['@link' => $link->toString()]),
+        '#markup' => t("Products can't be created until a store has been added. @link", ['@link' => $link->toString()]),
       ];
       return $form;
     }
@@ -77,7 +77,7 @@ class ProductForm extends ContentEntityForm {
    * {@inheritdoc}
    */
   public function form(array $form, FormStateInterface $form_state) {
-    /** @var \Drupal\commerce_product\Entity\ProductInterface $product */
+    /* @var \Drupal\commerce_product\Entity\Product $product */
     $product = $this->entity;
     $form = parent::form($form, $form_state);
 
@@ -91,7 +91,7 @@ class ProductForm extends ContentEntityForm {
     ];
     $form['status']['#group'] = 'footer';
 
-    $last_saved = $this->t('Not saved yet');
+    $last_saved = t('Not saved yet');
     if (!$product->isNew()) {
       $last_saved = $this->dateFormatter->format($product->getChangedTime(), 'short');
     }
@@ -131,7 +131,7 @@ class ProductForm extends ContentEntityForm {
     ];
     $form['visibility_settings'] = [
       '#type' => 'details',
-      '#title' => $this->t('Visibility settings'),
+      '#title' => t('Visibility settings'),
       '#open' => TRUE,
       '#group' => 'advanced',
       '#access' => !empty($form['stores']['#access']),
@@ -142,7 +142,7 @@ class ProductForm extends ContentEntityForm {
     ];
     $form['path_settings'] = [
       '#type' => 'details',
-      '#title' => $this->t('URL path settings'),
+      '#title' => t('URL path settings'),
       '#open' => !empty($form['path']['widget'][0]['alias']['#default_value']),
       '#group' => 'advanced',
       '#access' => !empty($form['path']['#access']) && $product->get('path')->access('edit'),
@@ -156,7 +156,7 @@ class ProductForm extends ContentEntityForm {
     ];
     $form['author'] = [
       '#type' => 'details',
-      '#title' => $this->t('Authoring information'),
+      '#title' => t('Authoring information'),
       '#group' => 'advanced',
       '#attributes' => [
         'class' => ['product-form-author'],

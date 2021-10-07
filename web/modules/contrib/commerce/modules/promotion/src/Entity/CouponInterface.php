@@ -4,12 +4,11 @@ namespace Drupal\commerce_promotion\Entity;
 
 use Drupal\commerce_order\Entity\OrderInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Entity\EntityChangedInterface;
 
 /**
  * Provides an interface for defining coupon entities.
  */
-interface CouponInterface extends ContentEntityInterface, EntityChangedInterface {
+interface CouponInterface extends ContentEntityInterface {
 
   /**
    * Gets the parent promotion.
@@ -46,24 +45,6 @@ interface CouponInterface extends ContentEntityInterface, EntityChangedInterface
   public function setCode($code);
 
   /**
-   * Gets the coupon creation timestamp.
-   *
-   * @return int
-   *   Creation timestamp of the coupon.
-   */
-  public function getCreatedTime();
-
-  /**
-   * Sets the coupon creation timestamp.
-   *
-   * @param int $timestamp
-   *   The coupon creation timestamp.
-   *
-   * @return $this
-   */
-  public function setCreatedTime($timestamp);
-
-  /**
    * Gets the coupon usage limit.
    *
    * Represents the maximum number of times the coupon can be used.
@@ -83,27 +64,6 @@ interface CouponInterface extends ContentEntityInterface, EntityChangedInterface
    * @return $this
    */
   public function setUsageLimit($usage_limit);
-
-  /**
-   * Gets the per customer coupon usage limit.
-   *
-   * Represents the maximum number of times the coupon can be used by a customer.
-   * 0 for unlimited.
-   *
-   * @return int
-   *   The per customer coupon usage limit.
-   */
-  public function getCustomerUsageLimit();
-
-  /**
-   * Sets the per customer coupon usage limit.
-   *
-   * @param int $usage_limit_customer
-   *   The per customer coupon usage limit.
-   *
-   * @return $this
-   */
-  public function setCustomerUsageLimit($usage_limit_customer);
 
   /**
    * Gets whether the coupon is enabled.

@@ -71,30 +71,19 @@ class StatsController extends AbstractController implements StatsControllerInter
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      *
      * @psalm-suppress InvalidOperand - $this->normalizer->normalize() always returns an array.
      */
     public function getMetrics(StatsQueryInterface $query, ?string $optimized = 'js'): array
     {
-        $query_params = (array) $this->normalizer->normalize($query);
-
-        if ('js' === $optimized && !$this->isHybrid()) {
-            $query_params += [
+        $query_params = [
                 '_optimized' => $optimized,
-            ];
-        }
-
+            ] + $this->normalizer->normalize($query);
         $uri = $this->getBaseEndpointUri()->withQuery(http_build_query($query_params));
         $response = $this->responseToArray($this->client->get($uri));
 
-        if ($this->isHybrid()) {
-            if (isset($response['Response']['TimeUnit'])) {
-                $response['Response']['TimeUnit'] = array_map('intval', $response['Response']['TimeUnit']);
-            }
-        }
-
-        return $response['Response'] ?? [];
+        return $response['Response'];
     }
 
     /**
@@ -143,31 +132,21 @@ class StatsController extends AbstractController implements StatsControllerInter
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      *
      * @psalm-suppress InvalidOperand - $this->normalizer->normalize() always returns an array.
      */
     public function getMetricsByDimensions(array $dimensions, StatsQueryInterface $query, ?string $optimized = 'js'): array
     {
-        $query_params = (array) $this->normalizer->normalize($query);
-        if ('js' === $optimized && !$this->isHybrid()) {
-            $query_params += [
+        $query_params = [
                 '_optimized' => $optimized,
-            ];
-        }
-
+            ] + $this->normalizer->normalize($query);
         $path = $this->getBaseEndpointUri()->getPath() . implode(',', $dimensions);
         $uri = $this->getBaseEndpointUri()->withPath($path)
             ->withQuery(http_build_query($query_params));
         $response = $this->responseToArray($this->client->get($uri));
 
-        if ($this->isHybrid()) {
-            if (isset($response['Response']['TimeUnit'])) {
-                $response['Response']['TimeUnit'] = array_map('intval', $response['Response']['TimeUnit']);
-            }
-        }
-
-        return $response['Response'] ?? [];
+        return $response['Response'];
     }
 
     /**
@@ -220,7 +199,7 @@ class StatsController extends AbstractController implements StatsControllerInter
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getOrganisationName(): string
     {
@@ -228,16 +207,12 @@ class StatsController extends AbstractController implements StatsControllerInter
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function getBaseEndpointUri(): UriInterface
     {
-        if ($this->isHybrid()) {
-            return $this->client->getUriFactory()->createUri("/organizations/{$this->organization}/environments/$this->environment/optimizedStats/");
-        } else {
-            // Slash in the end is always required.
-            return $this->client->getUriFactory()->createUri("/organizations/{$this->organization}/environments/$this->environment/stats/");
-        }
+        // Slash in the end is always required.
+        return $this->client->getUriFactory()->createUri("/organizations/{$this->organization}/environments/$this->environment/stats/");
     }
 
     /**
@@ -313,16 +288,5 @@ class StatsController extends AbstractController implements StatsControllerInter
             // Keep original numerical indexes.
             $metricsData[$key]['values'] = array_values($metricsData[$key]['values']);
         }
-    }
-
-    /**
-    * Helper function to check current organization is Hybrid or Edge.
-    *
-    * @return bool
-    *   True if current organization is Hybrid otherwise False
-    */
-    private function isHybrid(): bool
-    {
-        return ClientInterface::APIGEE_ON_GCP_ENDPOINT === $this->getClient()->getEndpoint();
     }
 }

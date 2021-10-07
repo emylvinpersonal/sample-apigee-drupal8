@@ -2,7 +2,6 @@
 
 namespace Drupal\commerce_payment\Form;
 
-use Drupal\commerce\InlineFormManager;
 use Drupal\commerce_payment\PaymentGatewayManager;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\EntityForm;
@@ -22,23 +21,13 @@ class PaymentGatewayForm extends EntityForm {
   protected $pluginManager;
 
   /**
-   * The inline form manager.
-   *
-   * @var \Drupal\commerce\InlineFormManager
-   */
-  protected $inlineFormManager;
-
-  /**
    * Constructs a new PaymentGatewayForm object.
    *
    * @param \Drupal\commerce_payment\PaymentGatewayManager $plugin_manager
    *   The payment gateway plugin manager.
-   * @param \Drupal\commerce\InlineFormManager $inline_form_manager
-   *   The inline form manager.
    */
-  public function __construct(PaymentGatewayManager $plugin_manager, InlineFormManager $inline_form_manager) {
+  public function __construct(PaymentGatewayManager $plugin_manager) {
     $this->pluginManager = $plugin_manager;
-    $this->inlineFormManager = $inline_form_manager;
   }
 
   /**
@@ -46,8 +35,7 @@ class PaymentGatewayForm extends EntityForm {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('plugin.manager.commerce_payment_gateway'),
-      $container->get('plugin.manager.commerce_inline_form')
+      $container->get('plugin.manager.commerce_payment_gateway')
     );
   }
 
@@ -118,16 +106,12 @@ class PaymentGatewayForm extends EntityForm {
         'wrapper' => $wrapper_id,
       ],
     ];
-
-    $inline_form = $this->inlineFormManager->createInstance('plugin_configuration', [
-      'plugin_type' => 'commerce_payment_gateway',
-      'plugin_id' => $plugin,
-      'plugin_configuration' => $plugin_configuration,
-    ]);
-    $form['configuration']['#inline_form'] = $inline_form;
-    $form['configuration']['#parents'] = ['configuration'];
-    $form['configuration'] = $inline_form->buildInlineForm($form['configuration'], $form_state);
-
+    $form['configuration'] = [
+      '#type' => 'commerce_plugin_configuration',
+      '#plugin_type' => 'commerce_payment_gateway',
+      '#plugin_id' => $plugin,
+      '#default_value' => $plugin_configuration,
+    ];
     $form['conditions'] = [
       '#type' => 'commerce_conditions',
       '#title' => $this->t('Conditions'),

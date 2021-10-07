@@ -24,7 +24,7 @@ use Apigee\Edge\Api\Monetization\Normalizer\SupportedCurrencyNormalizer;
 class SupportedCurrencySerializer extends EntitySerializer
 {
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public static function getEntityTypeSpecificDefaultNormalizers(): array
     {

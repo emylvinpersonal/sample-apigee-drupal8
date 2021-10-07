@@ -11,7 +11,6 @@ use CommerceGuys\Addressing\AbstractEnum;
  * part of it. Used for postal code validation.
  *
  * @codeCoverageIgnore
- * @deprecated since commerceguys/addressing 1.1.0.
  */
 final class PatternType extends AbstractEnum
 {
